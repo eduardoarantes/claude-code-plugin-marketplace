@@ -38,27 +38,17 @@ You can install plugins at different scopes depending on your needs:
 
 ### Global Installation (User-Level)
 
-Install plugins globally for all your projects:
+Install plugins globally for all your projects using the `/plugin` command:
 
 ```bash
 /plugin install plugin-name@marketplace-name
 ```
 
-When prompted, select **"User settings"**. This saves to `~/.claude/settings.json` and applies across all projects.
+This saves to `~/.claude/settings.json` and applies across all projects.
 
 ### Project-Level Installation (Recommended for Teams)
 
-Install plugins for a specific project only:
-
-**Option 1: Using the `/plugin` command**
-
-```bash
-/plugin install plugin-name@marketplace-name
-```
-
-When prompted, select **"Project"**. This saves to `.claude/settings.json` in your project root.
-
-**Option 2: Manual configuration**
+Install plugins for a specific project only by manually configuring your project settings:
 
 Create or edit `.claude/settings.json` in your project root:
 
