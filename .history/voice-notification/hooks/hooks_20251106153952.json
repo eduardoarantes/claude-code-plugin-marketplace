@@ -1,8 +1,5 @@
 {
-  "name": "voice-notification",
-  "description": "Voice notifications when Claude needs user input",
-  "version": "1.0.0",
-  "hooks": {
+    "hooks": {
     "Notification": [
       {
         "hooks": [
