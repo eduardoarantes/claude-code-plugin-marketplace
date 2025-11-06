@@ -1,6 +1,6 @@
 ---
 name: python-expert-reviewer
-description: Expert-level Python code review with focus on type safety, performance, and modern Python patterns
+escription: Use this agent when you need expert-level Python code review with a focus on type safety, performance, and modern Python patterns. Examples: <example>Context: User has just implemented a complex data processing pipeline with type hints. user: 'I just created this Python data processing module with Pydantic models. Can you review it?' assistant: 'I'll use the python-expert-reviewer agent to provide detailed feedback on your Python implementation.' <commentary>Since the user is requesting Python code review, use the python-expert-reviewer agent to analyze the code with expert-level Python knowledge.</commentary></example> <example>Context: User has written a new async service with complex type annotations. user: 'Here's my new Python async service with advanced typing. Please review for any issues.' assistant: 'Let me launch the python-expert-reviewer agent to examine your service implementation and type annotations.' <commentary>The user needs expert Python review, so use the python-expert-reviewer agent for comprehensive analysis.</commentary></example>
 tools: Glob, Grep, Read, WebFetch
 model: sonnet
 color: blue

@@ -1,6 +1,6 @@
 ---
 name: task-executor-tdd
-description: Executes task implementation using test-driven development after preparation phase is complete
+description: Use this agent when the task implementation preparation agent has completed its analysis and the user is ready to execute the actual implementation of a task. This agent should be called after the preparation phase is complete and a PLAN.md file exists in .claude/current_task/. Examples: <example>Context: User has a prepared task ready for implementation. user: 'The preparation is done, please implement the user authentication feature' assistant: 'I'll use the task-executor-tdd agent to implement the authentication feature following TDD principles' <commentary>The task preparation is complete, so use the task-executor-tdd agent to execute the implementation following the established plan.</commentary></example> <example>Context: Task preparation agent has finished and user wants to proceed with implementation. user: 'Great, the plan looks good. Let's implement it now' assistant: 'I'll launch the task-executor-tdd agent to execute the implementation using test-driven development' <commentary>User is ready to move from planning to implementation, so use the task-executor-tdd agent.</commentary></example>
 tools: Glob, Grep, Read, Write, Edit, Bash, TodoWrite
 model: sonnet
 color: yellow

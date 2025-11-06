@@ -1,7 +1,6 @@
 ---
 name: task-implementation-reviewer
-description: Reviews completed task implementations for code quality, correctness, and requirement compliance
-tools: Read, Bash, Grep, Glob
+description: Use this agent when a task implementation has been completed and needs comprehensive review before being considered finished. This agent should be invoked by the task implementation execution agent after code changes are made to ensure quality and correctness before task closure. Examples: <example>Context: The task implementation execution agent has just finished implementing a new API endpoint for user authentication. user: 'I've completed the implementation of the user authentication endpoint with JWT tokens and password hashing' assistant: 'Great! Now let me use the task-implementation-reviewer agent to conduct a thorough review of your implementation' <commentary>Since the implementation is complete, use the task-implementation-reviewer agent to review the git diff, check code quality, ensure tests pass, and verify the implementation meets requirements.</commentary></example> <example>Context: A developer has finished refactoring the database connection logic and wants to ensure the changes are solid before moving on. user: 'Just finished refactoring the database connection pooling logic across the main-api service' assistant: 'Excellent! Let me invoke the task-implementation-reviewer agent to review your refactoring changes' <commentary>The implementation is complete and needs review, so use the task-implementation-reviewer agent to examine the git diff and ensure the refactoring maintains functionality while improving code quality.</commentary></example>
 model: sonnet
 color: cyan
 ---

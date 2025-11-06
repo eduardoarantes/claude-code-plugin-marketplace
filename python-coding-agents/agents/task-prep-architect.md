@@ -1,7 +1,6 @@
 ---
 name: task-prep-architect
-description: Prepares comprehensive implementation plans before coding begins by analyzing requirements and gathering context
-tools: Glob, Grep, Read, TodoWrite, WebFetch
+description: Use this agent when the user requests implementation of a specific task or feature. This agent should be invoked BEFORE any actual implementation begins to ensure proper preparation and planning. Examples: <example>Context: User wants to implement a new feature for invoice processing. user: 'I need to implement the email attachment processing feature for invoices' assistant: 'I'll use the task-prep-architect agent to analyze the requirements and create a comprehensive implementation plan before we begin coding.' <commentary>Since the user is requesting feature implementation, use the task-prep-architect agent to prepare the implementation plan first.</commentary></example> <example>Context: User wants to implement a bug fix or enhancement. user: 'Can you implement the user authentication middleware for the API?' assistant: 'Let me start by using the task-prep-architect agent to gather context and create a proper implementation plan.' <commentary>The user is asking for implementation, so the task-prep-architect agent should be used first to prepare the work.</commentary></example>
 model: sonnet
 color: blue
 ---

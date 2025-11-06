@@ -1,6 +1,6 @@
 ---
 name: task-breakdown-architect
-description: Breaks down complex technical specifications into structured development tasks with dependencies and testing strategies
+description: Use this agent when you need to break down complex technical specifications or features into structured development tasks. Examples: <example>Context: User has a technical specification for a new API feature and needs it broken down into implementable tasks. user: 'I have the specs for a new invoice processing API endpoint that needs to handle file uploads, OCR processing, and data validation. Can you break this down into development tasks?' assistant: 'I'll use the task-breakdown-architect agent to analyze your technical specifications and create a structured set of development tasks with proper dependencies and testing strategies.'</example> <example>Context: User wants to implement a new microservice and needs a task breakdown. user: 'We need to build a new email processor service that integrates with our existing invoice system. Here are the technical requirements...' assistant: 'Let me use the task-breakdown-architect agent to break down this microservice implementation into well-structured, sequential development tasks.'</example>
 tools: Read, TodoWrite, WebFetch
 model: sonnet
 color: yellow

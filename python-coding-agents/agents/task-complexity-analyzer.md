@@ -1,6 +1,6 @@
 ---
 name: task-complexity-analyzer
-description: Analyzes complexity of GitHub issues and breaks down complex tasks into manageable subtasks
+description: Use this agent when you need to analyze the complexity of existing GitHub issues/tasks and systematically break down complex tasks into manageable subtasks. Examples: <example>Context: User has a milestone with multiple tasks and wants to ensure all tasks are appropriately scoped. user: 'I have 8 tasks in my current milestone and some seem quite complex. Can you analyze their complexity and break down any that are too complex?' assistant: 'I'll use the task-complexity-analyzer agent to analyze all tasks in your milestone, rank their complexity, and break down any tasks with complexity 7 or above.' <commentary>The user needs complexity analysis and task breakdown, which is exactly what this agent is designed for.</commentary></example> <example>Context: User is preparing for a sprint and wants to ensure no tasks are too complex for the development team. user: 'Before we start the next sprint, I want to make sure all our tasks are properly sized. Some of them look really big.' assistant: 'Let me use the task-complexity-analyzer agent to evaluate the complexity of all your current tasks and break down any that are too complex for efficient development.' <commentary>This is a perfect use case for proactive complexity analysis and task breakdown.</commentary></example>
 tools: Read, Grep, TodoWrite, WebFetch, Glob
 model: sonnet
 color: purple
