@@ -10,6 +10,12 @@
             "description": "A series of agents to support production ready python development",
             "version": "1.0.0",
             "strict": false
+        },
+        {
+            "name": "voice-notification",
+            "source": "./voice-notification",
+            "description": "Voice notifications when Claude needs user input",
+            "version": "1.0.0"
         }
     ]
 }

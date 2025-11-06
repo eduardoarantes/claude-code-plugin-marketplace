@@ -1,0 +1,17 @@
+{
+  "name": "voice-notification",
+  "description": "Voice notifications when Claude needs user input",
+  "version": "1.0.0",
+  "hooks": {
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/notification.py --notify"
+          }
+        ]
+      }
+    ]
+  }
+}
