@@ -1,0 +1,13 @@
+{
+    "name": "code-plugin-marketplace",
+    "owner": {
+        "name": "Eduardo Rodrigues"
+    },
+    "plugins": [
+        {
+            "name": "python-coding-agents",
+            "source": "./python-coding-agents",
+            "description": "My first test plugin"
+        }
+    ]
+}

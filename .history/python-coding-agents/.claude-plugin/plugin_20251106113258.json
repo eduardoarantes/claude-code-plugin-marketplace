@@ -1,0 +1,8 @@
+{
+    "name": "python-coding-agents",
+    "description": "A series of agents to support production ready python development",
+    "version": "1.0.0",
+    "author": {
+        "name": "Eduardo Rodrigues"
+    }
+}

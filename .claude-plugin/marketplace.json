@@ -1,0 +1,15 @@
+{
+    "name": "code-plugin-marketplace",
+    "owner": {
+        "name": "Eduardo Rodrigues"
+    },
+    "plugins": [
+        {
+            "name": "python-coding-agents",
+            "source": "./python-coding-agents",
+            "description": "A series of agents to support production ready python development",
+            "version": "1.0.0",
+            "strict": false
+        }
+    ]
+}

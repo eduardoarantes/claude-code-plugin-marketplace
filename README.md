@@ -1,0 +1,126 @@
+# Claude Code Plugin Marketplace
+
+A marketplace for Claude Code plugins focused on production-ready Python development.
+
+## Installation
+
+### Adding the Marketplace
+
+To add this marketplace to your Claude Code installation, use one of the following methods:
+
+**Option 1: From a local directory**
+
+If you've cloned this repository locally:
+
+```bash
+/plugin marketplace add /path/to/claude-code-plugin-marketplace
+```
+
+Replace `/path/to/claude-code-plugin-marketplace` with the absolute path to the directory where you cloned this repository.
+
+**Option 2: From GitHub (when published)**
+
+```bash
+/plugin marketplace add owner/repo
+```
+
+Replace `owner/repo` with the GitHub repository path.
+
+### Important Notes
+
+- Point to the **directory** (not the marketplace.json file directly)
+- Claude Code will automatically look for `.claude-plugin/marketplace.json` in that directory
+- Plugin source paths in the marketplace are resolved relative to the marketplace directory root
+
+## Available Plugins
+
+### python-coding-agents
+
+A series of agents to support production-ready Python development.
+
+**Installation:**
+
+```bash
+/plugin install python-coding-agents@code-plugin-marketplace
+```
+
+**Features:**
+- Task implementation and review agents
+- Code complexity analysis
+- Test-driven development support
+- Architecture planning
+- Python expert code review
+
+## Verifying Installation
+
+After adding the marketplace, verify it's configured:
+
+```bash
+/plugin marketplace list
+```
+
+Check available plugins:
+
+```bash
+/plugin list
+```
+
+Manage installed plugins:
+
+```bash
+/plugin
+```
+
+## Directory Structure
+
+```
+claude-code-plugin-marketplace/
+├── .claude-plugin/
+│   └── marketplace.json          # Marketplace configuration
+├── python-coding-agents/          # Plugin directory
+│   ├── .claude-plugin/
+│   │   └── plugin.json           # Plugin metadata
+│   ├── agents/                   # Agent definitions
+│   └── commands/                 # Custom commands
+└── README.md
+```
+
+## Troubleshooting
+
+### Marketplace installs but plugins not found
+
+Make sure you're pointing to the marketplace **directory**, not the marketplace.json file:
+
+❌ Wrong: `/plugin marketplace add ./.claude-plugin/marketplace.json`
+✅ Correct: `/plugin marketplace add /absolute/path/to/marketplace`
+
+### Plugin directory not found error
+
+Verify that:
+1. The plugin directory exists at the root level (e.g., `./python-coding-agents`)
+2. The source path in marketplace.json starts with `./`
+3. The plugin has a `.claude-plugin/plugin.json` file
+
+## Contributing
+
+To add new plugins to this marketplace:
+
+1. Create your plugin directory at the root level
+2. Add a `.claude-plugin/plugin.json` file with required metadata
+3. Update `.claude-plugin/marketplace.json` to include your plugin:
+
+```json
+{
+  "name": "your-plugin-name",
+  "source": "./your-plugin-directory",
+  "description": "Brief description of your plugin"
+}
+```
+
+## Owner
+
+**Eduardo Rodrigues**
+
+## License
+
+See individual plugin directories for license information.
