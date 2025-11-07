@@ -7,7 +7,7 @@ allowed-tools: Bash, Read, Glob, Grep
 
 # Purpose
 
-Remove an existing git worktree from the `trees/` directory AND delete the associated git branch. This includes stopping any running services on its ports, cleaning up processes, removing the worktree directory, and permanently deleting the branch. This ensures complete cleanup without orphaned processes or files.
+Remove an existing git worktree from the `trees/` directory AND delete the associated git branch.  removing the worktree directory, and permanently deleting the branch. This ensures complete cleanup without orphaned processes or files.
 
 ## Variables
 
@@ -78,7 +78,6 @@ WORKTREE_DIR: trees/<BRANCH_NAME>
 - Confirm worktree no longer appears in: `git worktree list`
 - Confirm directory no longer exists at WORKTREE_DIR
 - Confirm branch no longer exists: `git branch --list <BRANCH_NAME>`
-- Confirm no processes running on identified ports
 - If any validation fails, include in warnings section
 
 ### 9. Report

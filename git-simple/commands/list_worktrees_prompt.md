@@ -6,7 +6,7 @@ allowed-tools: Bash, Read, Glob, Grep
 
 # Purpose
 
-List all git worktrees in the `trees/` directory with comprehensive information including branch names, directories, environment variables, port configuration, and service status.
+List all git worktrees in the `trees/` directory with comprehensive information including branch names, directories, environment variables.
 
 ## Variables
 
@@ -19,8 +19,6 @@ WORKTREE_BASE_DIR: trees/
 
 - List all worktrees managed by git
 - For each worktree in trees/, gather configuration details
-- Read environment files to extract port configuration
-- Check if services are running on configured ports
 - Display comprehensive information in a clear, organized format
 - Show which worktrees are active vs stopped
 - Provide quick action commands for each worktree
@@ -66,8 +64,6 @@ After gathering all information, provide a comprehensive report in the following
 
 📈 Summary:
    Total Worktrees: <count>
-   Running: <count> | Stopped: <count>
-   Next Available Port Offset: <offset>
 
 ═══════════════════════════════════════════════════════════════
 
@@ -149,7 +145,6 @@ If worktrees have configuration issues:
 - Main repository is always shown first (uses default ports)
 - Worktrees are sorted alphabetically by branch name
 - Service status is checked in real-time
-- Port conflicts are detected and highlighted
 - Orphaned worktrees (in git but not in trees/) are noted
 - PIDs are shown for running processes for easy termination
 - All commands are copy-paste ready
