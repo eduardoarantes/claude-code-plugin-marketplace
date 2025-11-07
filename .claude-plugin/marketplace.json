@@ -16,6 +16,12 @@
             "source": "./voice-notification",
             "description": "Voice notifications when Claude needs user input",
             "version": "1.0.0"
+        }        ,
+        {
+            "name": "git-simple",
+            "source": "./git-simple",
+            "description": "Simple worktree management commands",
+            "version": "1.0.0"
         }
     ]
 }
