@@ -11,7 +11,7 @@ Detailed step-by-step instructions for each worktree operation.
 
 ### Step 2: Invoke command
 ```
-/create_worktree <branch-name>
+/git-simple:create_worktree_prompt <branch-name>
 ```
 
 ### Step 3: What happens automatically
@@ -33,7 +33,7 @@ Include:
 
 ### Step 1: Invoke command
 ```
-/list_worktrees
+/git-simple:list_worktrees_prompt
 ```
 
 ### Step 2: What the command shows
@@ -58,7 +58,7 @@ Highlight:
 
 ### Step 2: Invoke command
 ```
-/remove_worktree <branch-name>
+/git-simple:remove_worktree_prompt <branch-name>
 ```
 
 ### Step 3: What happens automatically

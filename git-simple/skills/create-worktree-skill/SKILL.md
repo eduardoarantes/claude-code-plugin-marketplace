@@ -31,16 +31,16 @@ Extract from the user's request:
 Use the SlashCommand tool to run:
 
 ```
-/create_worktree_prompt <branch-name> [port-offset]
+/git-simple:create_worktree_prompt <branch-name> [port-offset]
 ```
 
 **Examples:**
-- `/create_worktree_prompt feature-auth` - Creates worktree with auto-calculated ports
-- `/create_worktree_prompt fix-bug 2` - Creates worktree with port offset 2 (ports 4020, 5193)
+- `/git-simple:create_worktree_prompt feature-auth` - Creates worktree with auto-calculated ports
+- `/git-simple:create_worktree_prompt fix-bug 2` - Creates worktree with port offset 2 (ports 4020, 5193)
 
 ### Step 3: Share results
 
-The `/create_worktree_prompt` command will:
+The `/git-simple:create_worktree_prompt` command will:
 - Create the git worktree in `trees/<branch-name>`
 - Configure isolated ports (auto-incremented to avoid conflicts)
 - Set up environment files with proper configuration
@@ -60,22 +60,22 @@ Share the command output with the user, highlighting:
 
 **User:** "Create a worktree for the feature-dashboard branch"
 
-**Your response:** Use SlashCommand to run `/create_worktree_prompt feature-dashboard`
+**Your response:** Use SlashCommand to run `/git-simple:create_worktree_prompt feature-dashboard`
 
 ### Example 2: Worktree with specific port offset
 
 **User:** "Set up a parallel environment on branch hotfix-security with port offset 5"
 
-**Your response:** Use SlashCommand to run `/create_worktree_prompt hotfix-security 5`
+**Your response:** Use SlashCommand to run `/git-simple:create_worktree_prompt hotfix-security 5`
 
 ### Example 3: Multiple worktrees
 
 **User:** "I need worktrees for branches: feature-a, feature-b, and feature-c"
 
 **Your response:**
-1. Use SlashCommand to run `/create_worktree_prompt feature-a`
-2. Use SlashCommand to run `/create_worktree_prompt feature-b`
-3. Use SlashCommand to run `/create_worktree_prompt feature-c`
+1. Use SlashCommand to run `/git-simple:create_worktree_prompt feature-a`
+2. Use SlashCommand to run `/git-simple:create_worktree_prompt feature-b`
+3. Use SlashCommand to run `/git-simple:create_worktree_prompt feature-c`
 
 Each will automatically get unique ports (4010/5183, 4020/5193, 4030/5203).
 

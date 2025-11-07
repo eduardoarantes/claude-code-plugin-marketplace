@@ -6,7 +6,7 @@ Technical details, command syntax, and configuration reference.
 
 ### Create Worktree
 ```bash
-/create_worktree <branch-name>
+/git-simple:create_worktree_prompt <branch-name>
 ```
 
 **Parameters:**
@@ -14,31 +14,28 @@ Technical details, command syntax, and configuration reference.
 
 **Example:**
 ```bash
-/create_worktree feature-auth
-/create_worktree hotfix-bug 
+/git-simple:create_worktree_prompt feature-auth
+/git-simple:create_worktree_prompt hotfix-bug 
 ```
 
 ---
 
 ### List Worktrees
 ```bash
-/list_worktrees
+/git-simple:list_worktrees_prompt
 ```
 
 **Parameters:** None
 
 **Output includes:**
 - Worktree paths
-- Port configurations
-- Service status with PIDs
-- Access URLs
 - Quick commands
 
 ---
 
 ### Remove Worktree
 ```bash
-/remove_worktree <branch-name>
+/git-simple:remove_worktree_prompt <branch-name>
 ```
 
 **Parameters:**
@@ -46,36 +43,8 @@ Technical details, command syntax, and configuration reference.
 
 **Example:**
 ```bash
-/remove_worktree feature-auth
+/git-simple:remove_worktree_prompt feature-auth
 ```
-
----
-
-## Port Allocation
-
-### Port Calculation Formula
-```
-SERVER_PORT = 4000 + (offset * 10)
-CLIENT_PORT = 5173 + (offset * 10)
-```
-
-### Port Map
-
-| Environment | Offset | Server Port | Client Port |
-|-------------|--------|-------------|-------------|
-| Main Repo   | 0      | 4000        | 5173        |
-| Worktree 1  | 1      | 4010        | 5183        |
-| Worktree 2  | 2      | 4020        | 5193        |
-| Worktree 3  | 3      | 4030        | 5203        |
-| Worktree 4  | 4      | 4040        | 5213        |
-| Worktree 5  | 5      | 4050        | 5223        |
-
-### Auto-calculated Offsets
-When no port offset is specified, the system:
-1. Lists existing worktrees
-2. Finds highest used offset
-3. Increments by 1
-4. Uses that as the new offset
 
 ---
 
@@ -88,8 +57,7 @@ project/
 │   ├── settings.json
 │   └── commands/
 ├── .env
-├── server/
-└── client/
+
 ```
 
 ### Worktree Structure
@@ -100,53 +68,7 @@ project/
         ├── .claude/
         │   └── settings.json (isolated config)
         ├── .env (unique ports)
-        ├── server/
-        └── client/
 ```
-
----
-
-## Configuration Files
-
-### .env (Worktree-specific)
-```env
-VITE_SERVER_URL=http://localhost:[SERVER_PORT]
-VITE_CLIENT_PORT=[CLIENT_PORT]
-SERVER_PORT=[SERVER_PORT]
-```
-
-### .claude/settings.json (Worktree-specific)
-```json
-{
-  "hooks": {
-    "userPromptSubmit": {
-      "script": "...",
-      "env": {
-        "AGENT_SERVER_URL": "http://localhost:[SERVER_PORT]"
-      }
-    }
-  }
-}
-```
-
----
-
-## Service Management
-
-### What Runs in a Worktree
-1. **Server** - Backend API (Express/Node)
-2. **Client** - Frontend dev server (Vite)
-
-### Background Process Management
-- Services run in detached background processes
-- PIDs tracked for process management
-- Automatic cleanup on removal
-- Force-kill on stuck processes
-
-### Service States
-- **Running** - Process active with valid PID
-- **Stopped** - No process running
-- **Zombie** - PID exists but process unresponsive
 
 ---
 
@@ -175,9 +97,7 @@ Each worktree has:
 | Feature | Isolation Level | Notes |
 |---------|----------------|-------|
 | **File System** | Complete | Separate working directory |
-| **Ports** | Complete | Unique port allocation |
 | **Configuration** | Complete | Own .env and settings.json |
-| **Database** | Configurable | Can use separate DBs |
 | **Dependencies** | Complete | Own node_modules |
 | **Git History** | Shared | Same repository |
 | **Git Config** | Shared | Same git settings |
@@ -188,7 +108,6 @@ Each worktree has:
 
 ### Main Repository
 - Default environment
-- Uses ports 4000 and 5173
 - No special setup needed
 - Can run alongside worktrees
 
@@ -203,12 +122,6 @@ Each worktree has:
 - Branch still exists in git
 - Can recreate worktree anytime
 - Safe to cleanup unused worktrees
-
-### Service Lifecycle
-- Services start automatically on creation
-- Run in background until removal
-- Can be restarted manually if needed
-- Stopped automatically on removal
 
 ---
 
@@ -228,7 +141,7 @@ Each worktree has:
 ### Cleanup Recommendations
 - Remove worktrees when feature is merged
 - Don't let unused worktrees accumulate
-- Regular audit with `/list_worktrees`
+- Regular audit with `/git-simple:list_worktrees_prompt`
 - Free up ports for active development
 
 ### Naming Conventions

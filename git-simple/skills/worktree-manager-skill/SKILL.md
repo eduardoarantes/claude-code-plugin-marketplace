@@ -28,23 +28,23 @@ This skill manages three core worktree operations:
 
 | Operation | Command | When to Use |
 |-----------|---------|-------------|
-| **Create** | `/create_worktree` | User wants a new parallel environment |
-| **List** | `/list_worktrees` | User wants to see existing worktrees |
-| **Remove** | `/remove_worktree` | User wants to delete a worktree |
+| **Create** | `/git-simple:create_worktree_prompt` | User wants a new parallel environment |
+| **List** | `/git-simple:list_worktrees_prompt` | User wants to see existing worktrees |
+| **Remove** | `/git-simple:remove_worktree_prompt` | User wants to delete a worktree |
 
 ## Decision Tree: Which Command to Use
 
 ### 1. User wants to CREATE a worktree
 **Keywords:** create, new, setup, make, build, start, initialize
-**Action:** Use `/create_worktree <branch-name>`
+**Action:** Use `/git-simple:create_worktree_prompt <branch-name>`
 
 ### 2. User wants to LIST worktrees
 **Keywords:** list, show, display, what, which, status, check, view
-**Action:** Use `/list_worktrees`
+**Action:** Use `/git-simple:list_worktrees_prompt`
 
 ### 3. User wants to REMOVE a worktree
 **Keywords:** remove, delete, cleanup, destroy, stop, kill, terminate
-**Action:** Use `/remove_worktree <branch-name>`
+**Action:** Use `/git-simple:remove_worktree_prompt <branch-name>`
 
 ## Quick Start
 

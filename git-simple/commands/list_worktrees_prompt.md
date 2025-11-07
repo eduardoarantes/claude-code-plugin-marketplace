@@ -87,13 +87,13 @@ After gathering all information, provide a comprehensive report in the following
 💡 Quick Commands:
 
 Create new worktree:
-└─ /create_worktree <branch-name> 
+└─ /git-simple:create_worktree_prompt <branch-name> 
 
 Remove worktree:
-└─ /remove_worktree <branch-name>
+└─ /git-simple:remove_worktree_prompt <branch-name>
 
 View this list again:
-└─ /list_worktrees
+└─ /git-simple:list_worktrees_prompt
 
 ═══════════════════════════════════════════════════════════════
 ```
@@ -114,7 +114,7 @@ If no worktrees exist in trees/:
 ℹ️  No worktrees found in trees/ directory
 
 💡 Create your first worktree:
-   /create_worktree <branch-name>
+   /git-simple:create_worktree_prompt <branch-name>
 
    This will:
    • Create isolated git worktree
@@ -130,7 +130,7 @@ If worktrees have configuration issues:
 ⚠️  Configuration Warnings:
 
 • trees/<branch-name>: Missing .env files
-  └─ Fix: Recreate with /create_worktree <branch-name>
+  └─ Fix: Recreate with /git-simple:create_worktree_prompt <branch-name>
 
 • trees/<branch-name>: Dependencies not installed
   └─ Fix: cd trees/<branch-name>/apps/server && bun install

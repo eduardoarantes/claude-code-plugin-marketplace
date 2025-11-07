@@ -106,7 +106,7 @@ After successful worktree removal, provide a detailed report in the following fo
 📝 Important Notes:
    • Both the worktree AND branch '<BRANCH_NAME>' have been deleted
    • This removal is PERMANENT and cannot be undone
-   • If you need this branch again, create a new one with: /create_worktree <BRANCH_NAME>
+   • If you need this branch again, create a new one with: /git-simple:create_worktree_prompt <BRANCH_NAME>
    • The new branch will start from your current HEAD
 
 🔍 Verification:

@@ -10,7 +10,7 @@ Common issues and their solutions when managing worktrees.
 - URLs not responding
 
 ### Diagnosis Steps
-1. Run `/list_worktrees` to check status
+1. Run `/git-simple:list_worktrees_prompt` to check status
 2. Look for service status (running/stopped)
 3. Check port configuration
 
@@ -21,7 +21,7 @@ Common issues and their solutions when managing worktrees.
 
 ### What to tell the user
 > Let me check the status of your worktrees...
-> [run /list_worktrees]
+> [run /git-simple:list_worktrees_prompt]
 > I see the issue - [explain problem and solution]
 
 ---
@@ -39,7 +39,7 @@ Common issues and their solutions when managing worktrees.
 3. **Port already in use** - Another service using the ports
 
 ### Solutions
-1. Check existing worktrees: `/list_worktrees`
+1. Check existing worktrees: `/git-simple:list_worktrees_prompt`
 2. Verify branch exists: `git branch -a`
 3. Try a different port offset if ports conflict
 4. Remove old worktree first if recreating
@@ -54,7 +54,7 @@ Common issues and their solutions when managing worktrees.
 ### User doesn't know the URLs
 
 ### Solution
-1. Run `/list_worktrees` to see access URLs
+1. Run `/git-simple:list_worktrees_prompt` to see access URLs
 2. Show the Dashboard URL for their specific worktree
 3. Explain the port scheme
 
@@ -64,7 +64,7 @@ Common issues and their solutions when managing worktrees.
 
 ### Symptoms
 - Directory in `trees/` folder
-- Not showing in `/list_worktrees`
+- Not showing in `/git-simple:list_worktrees_prompt`
 - Git doesn't recognize it
 
 ### Likely Cause
@@ -85,7 +85,7 @@ Incomplete removal or manual deletion
 When user reports any issue:
 
 1. **Gather information**
-   - Run `/list_worktrees` first
+   - Run `/git-simple:list_worktrees_prompt` first
    - Ask which specific worktree
    - Ask what they were trying to do
 
@@ -107,7 +107,7 @@ When troubleshooting, check:
 
 - ✓ Does worktree directory exist? (`ls trees/`)
 - ✓ Is git aware of it? (`git worktree list`)
-- ✓ Are services running? (`/list_worktrees`)
+- ✓ Are services running? (`/git-simple:list_worktrees_prompt`)
 - ✓ Are ports available? (check PIDs)
 - ✓ Is configuration correct? (check .env, settings.json)
 - ✓ Did dependencies install? (check node_modules)

@@ -7,7 +7,7 @@ Real-world examples demonstrating how to handle different worktree management sc
 **User says:** "Create a worktree for the feature-authentication branch"
 
 **Your action:**
-1. Use SlashCommand: `/create_worktree feature-authentication`
+1. Use SlashCommand: `/git-simple:create_worktree_prompt feature-authentication`
 2. Share the output showing access URLs and ports
 
 **Result:** New worktree created at `trees/feature-authentication` with services running
@@ -25,7 +25,7 @@ Real-world examples demonstrating how to handle different worktree management sc
 **User says:** "Set up a parallel environment on branch hotfix-security with port offset 3"
 
 **Your action:**
-1. Use SlashCommand: `/create_worktree hotfix-security 3`
+1. Use SlashCommand: `/git-simple:create_worktree_prompt hotfix-security 3`
 2. Share output (will use ports 4030, 5203)
 
 **Result:** Worktree created with custom ports
@@ -42,7 +42,7 @@ Real-world examples demonstrating how to handle different worktree management sc
 **User says:** "What worktrees do I have?"
 
 **Your action:**
-1. Use SlashCommand: `/list_worktrees`
+1. Use SlashCommand: `/git-simple:list_worktrees_prompt`
 2. Share the comprehensive overview
 
 **Result:** User sees all worktrees with their configuration and status
@@ -54,7 +54,7 @@ Real-world examples demonstrating how to handle different worktree management sc
 **User says:** "Show me the status of my worktrees"
 
 **Your action:**
-1. Use SlashCommand: `/list_worktrees`
+1. Use SlashCommand: `/git-simple:list_worktrees_prompt`
 2. Highlight key information: running services, ports in use, access URLs
 
 **Result:** User sees which worktrees are active and their details
@@ -72,7 +72,7 @@ Real-world examples demonstrating how to handle different worktree management sc
 **User says:** "Delete the feature-auth worktree"
 
 **Your action:**
-1. Use SlashCommand: `/remove_worktree feature-auth`
+1. Use SlashCommand: `/git-simple:remove_worktree_prompt feature-auth`
 2. Confirm removal completed
 
 **Result:** Worktree removed, services stopped, directory cleaned up
@@ -90,7 +90,7 @@ Real-world examples demonstrating how to handle different worktree management sc
 **User says:** "Clean up the old-branch worktree, I don't need it anymore"
 
 **Your action:**
-1. Use SlashCommand: `/remove_worktree old-branch`
+1. Use SlashCommand: `/git-simple:remove_worktree_prompt old-branch`
 2. Share confirmation
 
 **Result:** Worktree removed successfully
@@ -104,9 +104,9 @@ Real-world examples demonstrating how to handle different worktree management sc
 **User says:** "Show me my worktrees, then create a new one for refactor-api"
 
 **Your action:**
-1. Use SlashCommand: `/list_worktrees`
+1. Use SlashCommand: `/git-simple:list_worktrees_prompt`
 2. Share current worktrees
-3. Use SlashCommand: `/create_worktree refactor-api`
+3. Use SlashCommand: `/git-simple:create_worktree_prompt refactor-api`
 4. Share new worktree details
 
 **Result:** User sees existing worktrees, then gets a new one created
@@ -125,10 +125,10 @@ Real-world examples demonstrating how to handle different worktree management sc
 **User says:** "I need three worktrees for branches: feature-a, feature-b, and feature-c"
 
 **Your action:**
-1. Use SlashCommand: `/create_worktree feature-a`
-2. Use SlashCommand: `/create_worktree feature-b`
-3. Use SlashCommand: `/create_worktree feature-c`
-4. Use SlashCommand: `/list_worktrees` (to show all three)
+1. Use SlashCommand: `/git-simple:create_worktree_prompt feature-a`
+2. Use SlashCommand: `/git-simple:create_worktree_prompt feature-b`
+3. Use SlashCommand: `/git-simple:create_worktree_prompt feature-c`
+4. Use SlashCommand: `/git-simple:list_worktrees_prompt` (to show all three)
 
 **Result:** Three parallel worktrees created with unique ports
 
