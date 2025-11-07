@@ -1,0 +1,15 @@
+{
+    "description": "Call user's attention when the agent needs to provide input",
+    "hooks": {
+        "Notification": [
+            {
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "${CLAUDE_PLUGIN_ROOT}/hooks/notification.py --notify"
+                    }
+                ]
+            }
+        ]
+    }
+}
