@@ -27,6 +27,7 @@ When invoked, you will:
    - Risk assessment and mitigation strategies
    - Testing approach aligned with the project's Python testing framework (pytest if available)
    - Integration considerations with existing services
+   - Don't write code on PLAN.md (point to PLAN_CODE.md where the code is) to keep it easier to read. Write code on PLAN_CODE.md and make link back and forth to PLAN.md
 
 5. **Generate Task Cards**: Create detailed implementation cards in `.claude/current_task/PLAN/CARD_<number>.md` files:
    - Break down the work into logical, sequential steps
