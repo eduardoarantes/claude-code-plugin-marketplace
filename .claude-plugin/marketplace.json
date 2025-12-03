@@ -12,6 +12,20 @@
             "strict": false
         },
         {
+            "name": "typescript-coding-agents",
+            "source": "./typescript-coding-agents",
+            "description": "A series of agents to support production ready typescript development",
+            "version": "1.0.0",
+            "strict": false
+        },
+        {
+            "name": "code-architecture",
+            "source": "./code-architecture",
+            "description": "A series of agents to support production ready development",
+            "version": "1.0.0",
+            "strict": false
+        },
+        {
             "name": "voice-notification",
             "source": "./voice-notification",
             "description": "Voice notifications when Claude needs user input",
