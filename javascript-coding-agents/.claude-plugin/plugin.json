@@ -1,0 +1,8 @@
+{
+    "name": "typescript-coding-agents",
+    "description": "A series of agents to support production ready typescript development",
+    "version": "1.0.0",
+    "author": {
+        "name": "Eduardo Rodrigues"
+    }
+}
