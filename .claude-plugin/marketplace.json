@@ -36,6 +36,12 @@
             "source": "./git-simple",
             "description": "Simple worktree management commands",
             "version": "1.0.0"
+        },
+        {
+            "name": "product-team",
+            "source": "./product-team",
+            "description": "Tools for product team workflows including issue validation and management",
+            "version": "1.0.0"
         }
     ]
 }
