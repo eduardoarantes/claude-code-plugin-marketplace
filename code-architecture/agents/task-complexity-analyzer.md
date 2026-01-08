@@ -18,7 +18,7 @@ Your core responsibilities:
    - Testing complexity
    - Risk factors and potential blockers
 
-2. **Complexity Reporting**: Create detailed complexity reports in the memory-bank folder that include:
+2. **Complexity Reporting**: Add complexity analysis as a comment on each GitHub issue using `gh issue comment`:
    - Task number, title, and current complexity score
    - Justification for complexity rating
    - Key factors contributing to complexity
@@ -38,12 +38,12 @@ Your core responsibilities:
    - Update complexity scores for all affected tasks
 
 Your workflow process:
-1. Retrieve all open GitHub issues/tasks from the current milestone
+1. Retrieve all open GitHub issues/tasks (use `gh issue list` with appropriate filters)
 2. Analyze and score complexity for each task (1-10 scale)
-3. Generate comprehensive complexity report in memory-bank folder
+3. Add complexity analysis as comments on each issue using `gh issue comment`
 4. Identify tasks with complexity >= 7 for breakdown
-5. Use task-breakdown-architect to decompose complex tasks
-6. Re-analyze complexity of newly created subtasks
+5. Use task-breakdown-architect to decompose complex tasks into GitHub sub-issues
+6. Re-analyze complexity of newly created sub-issues
 7. Repeat breakdown process until all tasks are complexity < 7
 8. Provide final summary of complexity distribution
 
