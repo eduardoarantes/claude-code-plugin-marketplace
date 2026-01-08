@@ -43,22 +43,36 @@ Validate GitHub issues, enhance unclear descriptions, and ensure all answers are
    - Mark as answered if a clear response was provided
    - Mark as unanswered/unclear if no response or ambiguous answer
 
-7. **Update the issue description immediately** when answers are found:
+7. **Handle "Future Implementation" answers:**
+   - If an answer contains phrases like "for future implementation", "future enhancement", "out of scope for now", "later phase", or similar deferred-work indicators:
+     - Create a new backlog issue for the deferred item:
+       ```bash
+       gh issue create --title "[To be Refined] <descriptive title of the deferred feature>" --body "## Context\nSpun off from issue #$ARGUMENTS\n\n## Description\n<description of the deferred feature/requirement>\n\n## Original Discussion\n<relevant context from the original issue>"
+       ```
+     - Add the `backlog` label to the new issue:
+       ```bash
+       gh issue edit <new-issue-number> --add-label "backlog"
+       ```
+     - Reference the new issue in the original issue's description under a "Related Issues" or "Deferred Items" section
+     - Note in the original issue that this item was moved to backlog
+
+8. **Update the issue description immediately** when answers are found:
    - DO NOT leave answers only in comments
    - Incorporate every answered question into the main description
    - Add/update a "Decisions" section with resolved items
    - Update relevant sections (requirements, acceptance criteria, etc.)
    - Use clear formatting (tables, bullet points) for readability
 
-8. **If questions remain unanswered:**
+9. **If questions remain unanswered:**
    - Create a comment listing the unanswered questions
    - Ask for clarification on any ambiguous answers
 
-9. **Add a summary comment** that includes:
-   - If title/description was enhanced: "Enhanced issue title/description for clarity"
-   - If a label was added: "Added label: `label-name`"
-   - If answers were incorporated: "Updated issue description with X decisions from comments"
-   - Any pending questions or items
+10. **Add a summary comment** that includes:
+    - If title/description was enhanced: "Enhanced issue title/description for clarity"
+    - If a label was added: "Added label: `label-name`"
+    - If answers were incorporated: "Updated issue description with X decisions from comments"
+    - If backlog issues were created: "Created X backlog issue(s) for future implementation: #Y, #Z"
+    - Any pending questions or items
 
 ## Updating the Issue Description
 
@@ -83,4 +97,5 @@ Provide a summary:
 - Questions answered: Y
 - Questions pending: Z
 - Description updates: (X decisions incorporated)
-- Actions taken: (updated issue / added label / enhanced description / added comment)
+- Backlog issues created: X (list issue numbers if any)
+- Actions taken: (updated issue / added label / enhanced description / added comment / created backlog issues)
