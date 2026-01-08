@@ -8,14 +8,14 @@
             "name": "python-coding-agents",
             "source": "./python-coding-agents",
             "description": "A series of agents to support production ready python development",
-            "version": "2.1.0",
+            "version": "2.2.0",
             "strict": false
         },
         {
             "name": "typescript-coding-agents",
             "source": "./typescript-coding-agents",
             "description": "A series of agents to support production ready typescript development",
-            "version": "2.1.0",
+            "version": "2.2.0",
             "strict": false
         },
         {
