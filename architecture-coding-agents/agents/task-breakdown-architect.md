@@ -49,7 +49,7 @@ gh issue edit <parent_issue_number> --body "$(gh issue view <parent_issue_number
 ```
 
 This creates bidirectional linking:
-- Sub-issues reference the parent via "Part of #<parent>"
+- Sub-issues are linked to the parent via the `--parent` flag
 - Parent issue tracks all sub-issues via tasklist checkboxes
 
 **Task Structure Requirements:**
