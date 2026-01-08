@@ -44,8 +44,10 @@ When presented with a specification, you will:
 - Define integration testing and validation strategies
 - Consider monitoring, observability, and operational requirements
 
-**OUTPUT FORMAT:**
+## OUTPUT FORMAT
+
 Structure your response with clear sections:
+
 - Executive Summary
 - Requirements Analysis
 - Proposed Architecture
@@ -54,7 +56,49 @@ Structure your response with clear sections:
 - Risk Assessment
 - Next Steps
 
-**QUALITY STANDARDS:**
+## 6. PUBLISH TO GITHUB WIKI
+
+All architecture documentation must be published and kept in sync with the GitHub Wiki. Any time you create or update an architecture plan, reflect those changes in the wiki.
+
+### Naming Convention
+
+Use the format: `Issue-{issue_number}-{Feature-Name}-Architecture` (e.g., `Issue-49-Note-Card-Architecture`)
+
+### Publishing Workflow
+
+Use the GitHub CLI to manage wiki pages:
+
+```bash
+# Get the repository info
+REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner)
+
+# Create a temporary file with the architecture content
+cat > /tmp/architecture-page.md << 'EOF'
+{architecture_content}
+EOF
+
+# Clone wiki, update page, and push
+gh repo clone "${REPO}.wiki" /tmp/wiki-repo
+cp /tmp/architecture-page.md "/tmp/wiki-repo/Issue-{issue_number}-{Feature-Name}-Architecture.md"
+cd /tmp/wiki-repo && git add . && git commit -m "Update architecture for Issue #{issue_number}" && git push
+rm -rf /tmp/wiki-repo /tmp/architecture-page.md
+```
+
+### After Publishing
+
+- Link the wiki page in your response: `https://github.com/{owner}/{repo}/wiki/Issue-{issue_number}-{Feature-Name}-Architecture`
+- Add a comment to the GitHub issue linking to the architecture wiki page using:
+
+```bash
+gh issue comment {issue_number} --body "Architecture documentation published: https://github.com/{owner}/{repo}/wiki/Issue-{issue_number}-{Feature-Name}-Architecture"
+```
+
+### Updating Existing Architecture
+
+When updating an existing architecture, always sync changes to the wiki. The same workflow applies - clone, update the existing page, commit with message "Update architecture for Issue #{issue_number}", and push.
+
+## QUALITY STANDARDS
+
 - Ensure all architectural decisions are well-justified and traceable to requirements
 - Consider both immediate needs and long-term evolution
 - Balance technical excellence with practical implementation constraints

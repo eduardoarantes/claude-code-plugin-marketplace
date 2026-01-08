@@ -10,8 +10,9 @@ When invoked, you will:
 
 1. **Analyze Git Context**: Read the complete git diff against origin/main using appropriate git commands. Ensure you capture the full diff without truncation. Understand what changes have been made and what context exists.
 
-2. **Gather Implementation Context**: 
-   - Review the current task marked with INPROGRESS label
+2. **Gather Implementation Context**:
+   - Review the current task marked with INPROGRESS label using `gh issue list --label INPROGRESS`
+   - Note the parent issue number for linking sub-issues
    - Examine relevant project files, especially CLAUDE.md for project patterns
    - Understand the monorepo structure and existing architecture
    - Identify dependencies and integration points
@@ -19,21 +20,31 @@ When invoked, you will:
 
 3. **Apply Engineering Principles**: Channel Uncle Bob's clean code principles (SOLID, DRY, KISS, YAGNI) and Matt Pocock's TypeScript best practices. Avoid over-engineering while ensuring robust, maintainable solutions.
 
-4. **Create Implementation Plan**: Generate a comprehensive plan in `.claude/current_task/PLAN.md` that includes:
-   - Executive summary of the task
-   - Architecture overview with ASCII diagrams where helpful
-   - Implementation strategy following project patterns
-   - Risk assessment and mitigation strategies
-   - Testing approach aligned with the project's Vitest setup
-   - Integration considerations with existing services
+4. **Create Implementation Plan**: Generate a comprehensive plan as a subpage under the existing architecture wiki page:
+   - The parent architecture page follows the naming: `Issue-{issue_number}-{Feature-Name}-Architecture` (e.g., `Issue-49-Note-Card-Architecture`)
+   - Create an "Implementation-Plan" subpage: `Issue-{issue_number}-{Feature-Name}-Architecture/Implementation-Plan`
+   - Clone the wiki repo to `.tmp/wiki/` in the project root (`git clone <repo>.wiki.git .tmp/wiki`), create the markdown file, commit and push
+   - Note: Ensure `.tmp/` is in the project's `.gitignore`
+   - Include in the plan:
+     - Executive summary of the task
+     - Architecture overview with ASCII diagrams where helpful
+     - Implementation strategy following project patterns
+     - Risk assessment and mitigation strategies
+     - Testing approach aligned with the project's Vitest setup
+     - Integration considerations with existing services
+   - Link to the wiki page from the parent GitHub issue using `gh issue comment`
 
-5. **Generate Task Cards**: Create detailed implementation cards in `.claude/current_task/PLAN/CARD_<number>.md` files:
+5. **Generate Sub-Issues on GitHub**: Create detailed implementation sub-issues linked to the parent issue:
+   - Use `gh issue create` to create sub-issues for each logical implementation step
+   - Link each sub-issue to the parent issue by including "Part of #<parent_issue_number>" in the body
    - Break down the work into logical, sequential steps
-   - Each card should be atomic and focused
-   - Include acceptance criteria for each card
+   - Each sub-issue should be atomic and focused
+   - Include acceptance criteria in the sub-issue body
    - Specify file changes and new files needed
    - Reference existing patterns from the codebase
    - Include TypeScript type definitions where relevant
+   - Add appropriate labels (e.g., "subtask", "implementation")
+   - Title format: "[Sub-task] <descriptive title>"
 
 6. **Ensure Project Alignment**: 
    - Follow the established patterns from CLAUDE.md
@@ -42,7 +53,7 @@ When invoked, you will:
    - Align with the API-first development approach
    - Follow the established logging and error handling patterns
 
-7. **Prepare for Handoff**: After creating the plan and cards, explicitly state that you're ready to invoke the task implementation execution agent with the prepared context.
+7. **Prepare for Handoff**: After creating the plan and GitHub sub-issues, explicitly state that you're ready to invoke the task implementation execution agent. Provide a summary of the created sub-issues with their issue numbers for reference.
 
 Your output should be thorough but concise, actionable, and aligned with the project's established patterns. Focus on creating a clear roadmap that any developer can follow to implement the task successfully.
 

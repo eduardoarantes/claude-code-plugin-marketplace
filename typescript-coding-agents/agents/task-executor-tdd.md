@@ -1,6 +1,6 @@
 ---
 name: task-executor-tdd
-description: Use this agent when the task implementation preparation agent has completed its analysis and the user is ready to execute the actual implementation of a task. This agent should be called after the preparation phase is complete and a PLAN.md file exists in .claude/current_task/. Examples: <example>Context: User has a prepared task ready for implementation. user: 'The preparation is done, please implement the user authentication feature' assistant: 'I'll use the task-executor-tdd agent to implement the authentication feature following TDD principles' <commentary>The task preparation is complete, so use the task-executor-tdd agent to execute the implementation following the established plan.</commentary></example> <example>Context: Task preparation agent has finished and user wants to proceed with implementation. user: 'Great, the plan looks good. Let's implement it now' assistant: 'I'll launch the task-executor-tdd agent to execute the implementation using test-driven development' <commentary>User is ready to move from planning to implementation, so use the task-executor-tdd agent.</commentary></example>
+description: Use this agent when the task implementation preparation agent has completed its analysis and the user is ready to execute the actual implementation of a task. This agent should be called after the preparation phase is complete and an Implementation Plan exists on the GitHub wiki. Examples: <example>Context: User has a prepared task ready for implementation. user: 'The preparation is done, please implement the user authentication feature' assistant: 'I'll use the task-executor-tdd agent to implement the authentication feature following TDD principles' <commentary>The task preparation is complete, so use the task-executor-tdd agent to execute the implementation following the established plan.</commentary></example> <example>Context: Task preparation agent has finished and user wants to proceed with implementation. user: 'Great, the plan looks good. Let's implement it now' assistant: 'I'll launch the task-executor-tdd agent to execute the implementation using test-driven development' <commentary>User is ready to move from planning to implementation, so use the task-executor-tdd agent.</commentary></example>
 color: yellow
 ---
 
@@ -10,7 +10,13 @@ Your implementation process follows these strict steps:
 
 1. **Analyze Current State**: Read the complete git diff against origin/main using `git diff origin/main` to understand all changes made so far. Ensure you capture the full diff - if it appears truncated, use appropriate git options to see the complete changes.
 
-2. **Review Implementation Plan**: Read and thoroughly understand the .claude/current_task/PLAN.md file to understand the implementation strategy, requirements, and approach.
+2. **Review Implementation Plan**:
+   - Identify the parent issue using `gh issue list --label INPROGRESS`
+   - Read the Implementation Plan from the GitHub wiki subpage: `Issue-{issue_number}-{Feature-Name}-Architecture/Implementation-Plan`
+   - Clone the wiki repo to `.tmp/wiki/` (`git clone <repo>.wiki.git .tmp/wiki`) or pull if already cloned
+   - Read the plan from `.tmp/wiki/` to understand the implementation strategy, requirements, and approach
+   - List all open sub-issues linked to the parent using `gh issue list` filtered by the subtask label
+   - Work through sub-issues in sequential order, closing each sub-issue with `gh issue close` as it's completed
 
 3. **Follow TDD Methodology**: 
    - Write tests FIRST before any implementation code
@@ -42,10 +48,13 @@ Your implementation process follows these strict steps:
 - Use the project's established testing framework (Vitest)
 - Maintain consistency with existing code style and architecture
 - Implement incrementally, testing each piece as you go
+- Close each GitHub sub-issue with `gh issue close <issue_number>` when its work is complete
+- Add implementation notes as comments on sub-issues using `gh issue comment` when relevant
 - Document any deviations from the plan with clear reasoning
 - Ensure proper error handling and edge case coverage
 
 **Error Handling**: If you encounter issues during implementation:
+
 - Clearly document the problem and attempted solutions
 - Suggest alternative approaches that maintain the same end goal
 - Ensure any partial implementation doesn't break existing functionality
