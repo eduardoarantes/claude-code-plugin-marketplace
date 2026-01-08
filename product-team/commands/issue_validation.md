@@ -43,7 +43,6 @@ Validate GitHub issues, enhance unclear descriptions, and ensure all answers are
      - Acceptance criteria (if missing)
      - Technical context from codebase investigation
      - Structured sections (Description, Current State, Proposed Solution, Tasks, etc.)
-   - Add a comment noting: "Enhanced issue title/description for clarity"
 
 5. **Identify all questions** in the issue body and comments that were asked by the maintainer/author
 
@@ -64,7 +63,6 @@ Validate GitHub issues, enhance unclear descriptions, and ensure all answers are
        gh issue edit <new-issue-number> --add-label "backlog"
        ```
      - Reference the new issue in the original issue's description under a "Related Issues" or "Deferred Items" section
-     - Note in the original issue that this item was moved to backlog
 
 9. **Update the issue description immediately** when answers are found:
    - DO NOT leave answers only in comments
@@ -75,15 +73,11 @@ Validate GitHub issues, enhance unclear descriptions, and ensure all answers are
 
 10. **If questions remain unanswered:**
     - Create a comment listing the unanswered questions
-    - Ask for clarification on any ambiguous answers
-
-11. **Add a summary comment** that includes:
-    - If title was reformatted: "Reformatted title for consistency"
-    - If title/description was enhanced: "Enhanced issue title/description for clarity"
-    - If a label was added: "Added label: `label-name`"
-    - If answers were incorporated: "Updated issue description with X decisions from comments"
-    - If backlog issues were created: "Created X backlog issue(s) for future implementation: #Y, #Z"
-    - Any pending questions or items
+    - Tag the original issue creator (from the `author` field) to request clarification
+    - Example:
+      ```bash
+      gh issue comment $ARGUMENTS --body "@<author-login> Could you please clarify the following questions?\n\n1. <question 1>\n2. <question 2>"
+      ```
 
 ## Updating the Issue Description
 
@@ -110,4 +104,4 @@ Provide a summary:
 - Questions pending: Z
 - Description updates: (X decisions incorporated)
 - Backlog issues created: X (list issue numbers if any)
-- Actions taken: (reformatted title / updated issue / added label / enhanced description / added comment / created backlog issues)
+- Actions taken: (reformatted title / updated issue / added label / enhanced description / created backlog issues / commented with pending questions)
