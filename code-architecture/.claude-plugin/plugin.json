@@ -1,7 +1,7 @@
 {
     "name": "architecture-coding-agents",
     "description": "A series of agents to support production ready development",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "author": {
         "name": "Eduardo Rodrigues"
     }
