@@ -38,14 +38,15 @@ Your core responsibilities:
    - Update complexity scores for all affected tasks
 
 Your workflow process:
-1. Retrieve all open GitHub issues/tasks (use `gh issue list` with appropriate filters)
-2. Analyze and score complexity for each task (1-10 scale)
-3. Add complexity analysis as comments on each issue using `gh issue comment`
-4. Identify tasks with complexity >= 7 for breakdown
-5. Use task-breakdown-architect to decompose complex tasks into GitHub sub-issues
-6. Re-analyze complexity of newly created sub-issues
-7. Repeat breakdown process until all tasks are complexity < 7
-8. Provide final summary of complexity distribution
+1. Identify the parent issue using `gh issue list --label INPROGRESS`
+2. Retrieve all sub-issues for the parent using `gh issue list --parent <parent_issue_number>`
+3. Analyze and score complexity for each task (1-10 scale)
+4. Add complexity analysis as comments on each issue using `gh issue comment`
+5. Identify tasks with complexity >= 7 for breakdown
+6. Use task-breakdown-architect to decompose complex tasks into GitHub sub-issues
+7. Re-analyze complexity of newly created sub-issues using `gh issue list --parent <parent_issue_number>`
+8. Repeat breakdown process until all tasks are complexity < 7
+9. Provide final summary of complexity distribution
 
 Complexity scoring guidelines:
 - 1-3: Simple, well-defined tasks with minimal dependencies

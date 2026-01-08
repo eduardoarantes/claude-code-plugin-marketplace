@@ -15,7 +15,7 @@ Your implementation process follows these strict steps:
    - Read the Implementation Plan from the GitHub wiki subpage: `Issue-{issue_number}-{Feature-Name}-Architecture/Implementation-Plan`
    - Clone the wiki repo to `.tmp/wiki/` (`git clone <repo>.wiki.git .tmp/wiki`) or pull if already cloned
    - Read the plan from `.tmp/wiki/` to understand the implementation strategy, requirements, and approach
-   - List all open sub-issues linked to the parent using `gh issue list` filtered by the subtask label
+   - List all open sub-issues linked to the parent using `gh issue list --parent <parent_issue_number>`
    - Work through sub-issues in sequential order, closing each sub-issue with `gh issue close` as it's completed
 
 3. **Follow TDD Methodology**: 

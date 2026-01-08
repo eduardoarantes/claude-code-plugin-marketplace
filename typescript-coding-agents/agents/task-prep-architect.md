@@ -35,8 +35,8 @@ When invoked, you will:
    - Link to the wiki page from the parent GitHub issue using `gh issue comment`
 
 5. **Generate Sub-Issues on GitHub**: Create detailed implementation sub-issues linked to the parent issue:
-   - Use `gh issue create` to create sub-issues for each logical implementation step
-   - Link each sub-issue to the parent issue by including "Part of #<parent_issue_number>" in the body
+   - Use `gh issue create --parent <parent_issue_number>` to create sub-issues for each logical implementation step
+   - The `--parent` flag automatically links the sub-issue to the parent issue
    - Break down the work into logical, sequential steps
    - Each sub-issue should be atomic and focused
    - Include acceptance criteria in the sub-issue body
