@@ -23,7 +23,17 @@ Validate GitHub issues, enhance unclear descriptions, and ensure all answers are
      gh issue edit $ARGUMENTS --add-label "suggested-label"
      ```
 
-3. **Assess issue quality** - If the issue is new or lacks detail:
+3. **Reformat the title** for consistency:
+   - First letter must be uppercase
+   - Format acronyms properly (e.g., "api" → "API", "url" → "URL", "html" → "HTML", "css" → "CSS", "json" → "JSON", "sql" → "SQL", "http" → "HTTP", "ui" → "UI", "ux" → "UX", "cli" → "CLI", "sdk" → "SDK", "aws" → "AWS", "gcp" → "GCP")
+   - Format symbols and technical terms properly (e.g., "github" → "GitHub", "javascript" → "JavaScript", "typescript" → "TypeScript", "nodejs" → "Node.js", "graphql" → "GraphQL", "oauth" → "OAuth", "mongodb" → "MongoDB", "postgresql" → "PostgreSQL")
+   - Preserve intentional casing in code references (e.g., function names, variable names in backticks)
+   - Update if needed:
+     ```bash
+     gh issue edit $ARGUMENTS --title "Properly Formatted Title"
+     ```
+
+4. **Assess issue quality** - If the issue is new or lacks detail:
    - **Title**: If vague or unclear, suggest a more descriptive title
      ```bash
      gh issue edit $ARGUMENTS --title "New clearer title"
@@ -35,15 +45,15 @@ Validate GitHub issues, enhance unclear descriptions, and ensure all answers are
      - Structured sections (Description, Current State, Proposed Solution, Tasks, etc.)
    - Add a comment noting: "Enhanced issue title/description for clarity"
 
-4. **Identify all questions** in the issue body and comments that were asked by the maintainer/author
+5. **Identify all questions** in the issue body and comments that were asked by the maintainer/author
 
-5. **Check each comment** for answers provided by the user (issue owner)
+6. **Check each comment** for answers provided by the user (issue owner)
 
-6. **For each question, determine if it has been answered:**
+7. **For each question, determine if it has been answered:**
    - Mark as answered if a clear response was provided
    - Mark as unanswered/unclear if no response or ambiguous answer
 
-7. **Handle "Future Implementation" answers:**
+8. **Handle "Future Implementation" answers:**
    - If an answer contains phrases like "for future implementation", "future enhancement", "out of scope for now", "later phase", or similar deferred-work indicators:
      - Create a new backlog issue for the deferred item:
        ```bash
@@ -56,18 +66,19 @@ Validate GitHub issues, enhance unclear descriptions, and ensure all answers are
      - Reference the new issue in the original issue's description under a "Related Issues" or "Deferred Items" section
      - Note in the original issue that this item was moved to backlog
 
-8. **Update the issue description immediately** when answers are found:
+9. **Update the issue description immediately** when answers are found:
    - DO NOT leave answers only in comments
    - Incorporate every answered question into the main description
    - Add/update a "Decisions" section with resolved items
    - Update relevant sections (requirements, acceptance criteria, etc.)
    - Use clear formatting (tables, bullet points) for readability
 
-9. **If questions remain unanswered:**
-   - Create a comment listing the unanswered questions
-   - Ask for clarification on any ambiguous answers
+10. **If questions remain unanswered:**
+    - Create a comment listing the unanswered questions
+    - Ask for clarification on any ambiguous answers
 
-10. **Add a summary comment** that includes:
+11. **Add a summary comment** that includes:
+    - If title was reformatted: "Reformatted title for consistency"
     - If title/description was enhanced: "Enhanced issue title/description for clarity"
     - If a label was added: "Added label: `label-name`"
     - If answers were incorporated: "Updated issue description with X decisions from comments"
@@ -91,6 +102,7 @@ Structure the description with clear sections:
 ## Output Format
 
 Provide a summary:
+- Title formatting: (reformatted / already correct)
 - Issue quality: (enhanced title/description / already clear)
 - Label status: (existing: X / added: Y)
 - Total questions identified: X
@@ -98,4 +110,4 @@ Provide a summary:
 - Questions pending: Z
 - Description updates: (X decisions incorporated)
 - Backlog issues created: X (list issue numbers if any)
-- Actions taken: (updated issue / added label / enhanced description / added comment / created backlog issues)
+- Actions taken: (reformatted title / updated issue / added label / enhanced description / added comment / created backlog issues)
