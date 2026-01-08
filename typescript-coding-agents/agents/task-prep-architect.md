@@ -27,7 +27,7 @@ When invoked, you will:
    - Note: Ensure `.tmp/` is in the project's `.gitignore`
    - Include in the plan:
      - Executive summary of the task
-     - Architecture overview with ASCII diagrams where helpful
+     - Architecture overview with Mermaid diagrams where helpful (use `graph TD`, `sequenceDiagram`, `erDiagram` as appropriate)
      - Implementation strategy following project patterns
      - Risk assessment and mitigation strategies
      - Testing approach aligned with the project's Vitest setup
