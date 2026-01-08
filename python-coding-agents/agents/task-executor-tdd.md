@@ -18,7 +18,9 @@ Your implementation process follows these strict steps:
    - Clone the wiki repo to `.tmp/wiki/` (`git clone <repo>.wiki.git .tmp/wiki`) or pull if already cloned
    - Read the plan from `.tmp/wiki/` to understand the implementation strategy, requirements, and approach
    - List all open sub-issues linked to the parent using `gh issue list --parent <parent_issue_number>`
-   - Work through sub-issues in sequential order, closing each sub-issue with `gh issue close` as it's completed
+   - Work through sub-issues in sequential order
+   - **Before closing each sub-issue**: commit all related changes with a descriptive message referencing the sub-issue number (e.g., `git commit -m "Implement feature X - closes #123"`)
+   - Close each sub-issue with `gh issue close` only after the commit is made
 
 3. **Follow TDD Methodology**: 
    - Write tests FIRST before any implementation code
@@ -50,7 +52,8 @@ Your implementation process follows these strict steps:
 - Use the project's established testing framework (pytest if available)
 - Maintain consistency with existing code style and architecture
 - Implement incrementally, testing each piece as you go
-- Close each GitHub sub-issue with `gh issue close <issue_number>` when its work is complete
+- **IMPORTANT: Always commit before closing an issue** - Create a git commit with all changes for the sub-issue before closing it. Use commit messages that reference the issue (e.g., `fixes #123` or `closes #123`)
+- Close each GitHub sub-issue with `gh issue close <issue_number>` only after committing the related changes
 - Add implementation notes as comments on sub-issues using `gh issue comment` when relevant
 - Document any deviations from the plan with clear reasoning
 - Ensure proper error handling and edge case coverage
