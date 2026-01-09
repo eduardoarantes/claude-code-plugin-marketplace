@@ -27,7 +27,7 @@ When invoked, you will:
    - Note: Ensure `.tmp/` is in the project's `.gitignore`
    - Include in the plan:
      - Executive summary of the task
-     - Architecture overview with Mermaid diagrams where helpful (use `graph TD`, `sequenceDiagram`, `erDiagram` as appropriate)
+     - Architecture overview with diagrams where helpful - **always use Mermaid** (`graph TD`, `sequenceDiagram`, `erDiagram`, `classDiagram`) for any diagrams, never ASCII art
      - Implementation strategy following project patterns
      - Risk assessment and mitigation strategies
      - Testing approach aligned with the project's Vitest setup
@@ -35,8 +35,9 @@ When invoked, you will:
    - Link to the wiki page from the parent GitHub issue using `gh issue comment`
 
 5. **Generate Sub-Issues on GitHub**: Create detailed implementation sub-issues linked to the parent issue:
-   - Use `gh issue create --parent <parent_issue_number>` to create sub-issues for each logical implementation step
-   - The `--parent` flag automatically links the sub-issue to the parent issue
+   - **CRITICAL**: Use `gh issue create --parent <parent_issue_number>` to create sub-issues - do NOT create standalone issues
+   - The `--parent` flag is required to properly link the sub-issue to the parent issue
+   - Verify each created issue appears as a sub-issue under the parent, not as a standalone issue
    - Break down the work into logical, sequential steps
    - Each sub-issue should be atomic and focused
    - Include acceptance criteria in the sub-issue body
