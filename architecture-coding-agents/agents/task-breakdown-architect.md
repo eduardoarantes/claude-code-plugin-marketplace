@@ -21,7 +21,7 @@ When analyzing technical specifications, you will:
 3. **Create Atomic Tasks**: Break down work into single-responsibility tasks that can be completed independently while maintaining clear interfaces
 4. **Establish Dependencies**: Map task relationships and ensure proper sequencing to avoid blocking scenarios
 5. **Define Testing Strategy**: Include comprehensive validation approaches for each task including unit tests, integration tests, and acceptance criteria
-6. **Create GitHub Sub-Issues**: For each task, create a GitHub sub-issue linked to the parent issue using `gh issue create --parent <issue_number>`
+6. **Create GitHub Sub-Issues**: For each task, create a GitHub sub-issue linked to the parent issue using `gh sub-issue create --parent <issue_number> --title "Title of the new sub-issue" --body "Details for the new sub-issue."`
 
 VERY IMPORTANT: Adding a text with the parent ID to the issue description DOES NOT make it a child issue
 
@@ -30,7 +30,7 @@ VERY IMPORTANT: Adding a text with the parent ID to the issue description DOES N
 For each task, create a GitHub sub-issue:
 
 ```bash
-gh issue create --title "[Sub-task] <Task Title>" --body "<issue_body>" --label "subtask" --parent <parent_issue_number>
+gh sub-issue create --parent <parent_issue_number> --title "[Sub-task] <Task Title>" --body "<issue_body>" --label "subtask"
 ```
 
 The `--parent` flag automatically links the sub-issue to the parent. The sub-issue body should include:
