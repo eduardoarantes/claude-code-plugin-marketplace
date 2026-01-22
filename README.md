@@ -176,6 +176,7 @@ claude-code-plugin-marketplace/
 Make sure you're pointing to the marketplace **directory**, not the marketplace.json file:
 
 ❌ Wrong: `/plugin marketplace add ./.claude-plugin/marketplace.json`
+
 ✅ Correct: `/plugin marketplace add /absolute/path/to/marketplace`
 
 ### Plugin directory not found error
