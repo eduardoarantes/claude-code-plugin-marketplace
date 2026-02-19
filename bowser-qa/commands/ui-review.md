@@ -204,11 +204,13 @@ Instructions:
     - Overall result: PASS or FAIL (look for `RESULT:` line)
     - Steps completed vs total (from `Steps: X/Y`)
     - The full agent report text
+    - Token usage from the `<usage>` block: `total_tokens`, `tool_uses`, `duration_ms`
 17. Include any stories that were pre-failed due to setup failure
+18. Also collect token usage from any setup agents that ran in Phase 1.5
 
 ### Phase 4: Cleanup and Report
 
-18. Delete ephemeral auth state files:
+19. Delete ephemeral auth state files:
     ```bash
     rm -f auth/*.json
     ```
@@ -248,8 +250,23 @@ Compose this markdown, write it to `{RUN_DIR}/report.md`, then also print it to 
 
 (Repeat for each failed story)
 
+## Token Usage
+
+| Agent              | Tokens     | Tool Uses | Duration |
+| ------------------ | ---------- | --------- | -------- |
+| Setup: {auth_file} | {tokens}   | {uses}    | {Xs}     |
+| {story name}       | {tokens}   | {uses}    | {Xs}     |
+| **Total**          | **{total}** | **{total}** | —     |
+
 ## Screenshots
 All screenshots saved to: `{RUN_DIR}/`
 ```
 
 Use ✅ ALL PASSED for status only when every story passed. Use ❌ PARTIAL FAILURE when some passed and some failed. Use ❌ ALL FAILED when none passed.
+
+For the Token Usage table:
+- Include one row per setup agent and one row per story agent
+- Parse `total_tokens`, `tool_uses`, and `duration_ms` from the `<usage>` block in each agent's response
+- Convert `duration_ms` to seconds for display (e.g., `45s`)
+- The **Total** row sums `total_tokens` and `tool_uses` across all agents
+- If token usage data is unavailable for an agent (e.g., it crashed), show `—` for that row
