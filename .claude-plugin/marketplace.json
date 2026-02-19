@@ -42,6 +42,13 @@
             "source": "./product-team",
             "description": "Tools for product team workflows including issue validation and management",
             "version": "1.0.0"
+        },
+        {
+            "name": "bowser-qa",
+            "source": "./bowser-qa",
+            "description": "Parallel UI story validation — discovers YAML user stories, fans out bowser-qa-agents with shared auth state, aggregates pass/fail results with screenshots and a markdown report",
+            "version": "1.0.0",
+            "strict": false
         }
     ]
 }
