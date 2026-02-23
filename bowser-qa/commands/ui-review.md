@@ -16,7 +16,7 @@ HEADED: "true" or "headed" keyword in arguments (default: "false")
 VISION: "vision" keyword in arguments — screenshots returned as image responses in context (higher token cost). Default: false.
 FILENAME_FILTER: remaining non-keyword, non-path arguments
 AGENT_TIMEOUT: 300000
-SCREENSHOTS_BASE: "screenshots/bowser-qa"
+SCREENSHOTS_BASE: "bowser-qa-test-results"
 RUN_DIR: "{SCREENSHOTS_BASE}/{YYYYMMDD_HHMMSS}_{short-uuid}" (generated once at start of run)
 
 ## Argument Parsing
@@ -40,7 +40,7 @@ Each YAML file may contain an optional `setup` array and a required `stories` ar
 ```yaml
 # Optional: one entry per unique auth identity
 setup:
-  - auth_file: "auth/cameron.json"   # path where state will be saved
+  - auth_file: "cameron.json"        # filename — saved to {RUN_DIR}/auth/
     url: "http://localhost:3000/login"
     workflow: |
       Navigate to the login page
@@ -58,27 +58,26 @@ stories:
 
   - name: "Dashboard loads"
     url: "http://localhost:3000/dashboard"
-    auth_file: "auth/cameron.json"   # load this state before navigating
+    auth_file: "cameron.json"        # must match a setup entry
     workflow: |
       Verify the dashboard page loads
       Verify key widgets are visible
 ```
 
-Stories without `auth_file` run as unauthenticated. Stories with `auth_file` load the saved state before navigating, skipping manual login.
+Stories without `auth_file` run as unauthenticated. Stories with `auth_file` load the saved state from `{RUN_DIR}/auth/{auth_file}` before navigating, skipping manual login.
 
 ## Codebase Structure
 
 ```
 {STORIES_DIR}/          # YAML user story files (configurable, default: ai_review/user_stories)
-auth/
-└── *.json              # ephemeral auth state files (gitignored)
-screenshots/
-└── bowser-qa/
-    └── 20260210_143022_a1b2c3/
-        ├── {file-stem}/
-        │   ├── {slugified-story-name}/
-        │   └── ...
-        └── report.md
+bowser-qa-test-results/
+└── 20260210_143022_a1b2c3/
+    ├── auth/
+    │   └── *.json          # ephemeral auth state files (per-run, auto-cleaned)
+    ├── {file-stem}/
+    │   ├── {slugified-story-name}/
+    │   └── ...
+    └── report.md
 ```
 
 ## Instructions
@@ -102,14 +101,14 @@ screenshots/
 7. If no stories are found, report that and stop
 8. Generate `RUN_DIR` using Bash:
    ```bash
-   RUN_DIR="screenshots/bowser-qa/$(date +%Y%m%d_%H%M%S)_$(uuidgen | tr '[:upper:]' '[:lower:]' | head -c 6)"
+   RUN_DIR="bowser-qa-test-results/$(date +%Y%m%d_%H%M%S)_$(uuidgen | tr '[:upper:]' '[:lower:]' | head -c 6)"
    ```
 9. For each story, build its `SCREENSHOT_PATH`:
    - `{RUN_DIR}/{file-stem}/{slugified-story-name}/`
-   - Example: `screenshots/bowser-qa/20260210_143022_a1b2c3/athlete-login/activities-page-loads/`
-10. Create the `auth/` directory if any setup entries exist:
+   - Example: `bowser-qa-test-results/20260210_143022_a1b2c3/athlete-login/activities-page-loads/`
+10. Create the `{RUN_DIR}/auth/` directory if any setup entries exist:
     ```bash
-    mkdir -p auth
+    mkdir -p {RUN_DIR}/auth
     ```
 
 ### Phase 1.5: Setup (Auth State)
@@ -123,14 +122,14 @@ Run this phase only if any stories reference an `auth_file`.
 You are performing a one-time login to save browser auth state for reuse by parallel test agents.
 
 **Login URL:** {setup.url}
-**Auth file to save:** {setup.auth_file}
+**Auth file to save:** {RUN_DIR}/auth/{setup.auth_file}
 **Headed:** {HEADED}
 
 **Workflow:**
 {setup.workflow}
 
 After completing the workflow, save the browser state:
-  playwright-cli state-save {setup.auth_file}
+  playwright-cli state-save {RUN_DIR}/auth/{setup.auth_file}
 
 Instructions:
 - Follow the workflow steps sequentially
@@ -180,7 +179,7 @@ Execute this user story and report results. Auth state is pre-saved — do NOT l
 **Vision:** {VISION}
 
 **Pre-step (do this first, before anything else):**
-Load saved auth state: playwright-cli state-load {story.auth_file}
+Load saved auth state: playwright-cli state-load {RUN_DIR}/auth/{story.auth_file}
 Then navigate to: {story.url}
 
 **Workflow:**
@@ -212,7 +211,7 @@ Instructions:
 
 19. Delete ephemeral auth state files:
     ```bash
-    rm -f auth/*.json
+    rm -rf {RUN_DIR}/auth
     ```
 19. Compose the full report markdown (see `Report` section below for the format).
 20. Write the report to `{RUN_DIR}/report.md` using the Write tool.
