@@ -1,7 +1,7 @@
 ---
 model: opus
 description: Parallel user story validation — discovers YAML stories, fans out bowser-qa-agents, aggregates results
-argument-hint: [stories-dir] [headed] [filename-filter] [vision]
+argument-hint: [main-site-url] [stories-dir] [headed] [filename-filter] [vision]
 ---
 
 # Purpose
@@ -18,20 +18,23 @@ FILENAME_FILTER: remaining non-keyword, non-path arguments
 AGENT_TIMEOUT: 300000
 SCREENSHOTS_BASE: "bowser-qa-test-results"
 RUN_DIR: "{SCREENSHOTS_BASE}/{YYYYMMDD_HHMMSS}_{short-uuid}" (generated once at start of run)
+MAIN_SITE: base URL for the application under test (e.g., `http://localhost:3000`). Resolved from `{RUN_DIR}/main_site` if it exists, otherwise prompted from the user and saved there.
 
 ## Argument Parsing
 
 Parse `$ARGUMENTS` as follows (order does not matter):
-- If an argument contains `/` or starts with `.` → it is `STORIES_DIR`
+- If an argument starts with `http://` or `https://` → it is `MAIN_SITE`
+- If an argument contains `/` or starts with `.` (but is not a URL) → it is `STORIES_DIR`
 - If an argument is `"true"` or `"headed"` → `HEADED=true`
 - If an argument is `"vision"` → `VISION=true`
 - Any remaining arguments → `FILENAME_FILTER`
 
 Examples:
 - `/ui-review` → STORIES_DIR=`ai_review/user_stories`
+- `/ui-review http://localhost:3000` → MAIN_SITE=`http://localhost:3000`
 - `/ui-review tests/stories` → STORIES_DIR=`tests/stories`
 - `/ui-review headed` → STORIES_DIR=`ai_review/user_stories`, HEADED=true
-- `/ui-review tests/stories athlete-login headed` → STORIES_DIR=`tests/stories`, FILENAME_FILTER=`athlete-login`, HEADED=true
+- `/ui-review tests/stories http://localhost:3000 athlete-login headed` → STORIES_DIR=`tests/stories`, MAIN_SITE=`http://localhost:3000`, FILENAME_FILTER=`athlete-login`, HEADED=true
 
 ## YAML File Format
 
@@ -41,7 +44,7 @@ Each YAML file may contain an optional `setup` array and a required `stories` ar
 # Optional: one entry per unique auth identity
 setup:
   - auth_file: "cameron.json"        # filename — saved to {RUN_DIR}/auth/
-    url: "http://localhost:3000/login"
+    url: "[MAIN_SITE]/login"
     workflow: |
       Navigate to the login page
       Fill email, fill password, click login
@@ -50,14 +53,14 @@ setup:
 # Required
 stories:
   - name: "Homepage loads"
-    url: "http://localhost:3000"
+    url: "[MAIN_SITE]"
     # no auth_file → runs without authentication
     workflow: |
       Navigate to the homepage
       Verify it loads successfully
 
   - name: "Dashboard loads"
-    url: "http://localhost:3000/dashboard"
+    url: "[MAIN_SITE]/dashboard"
     auth_file: "cameron.json"        # must match a setup entry
     workflow: |
       Verify the dashboard page loads
@@ -103,10 +106,17 @@ bowser-qa-test-results/
    ```bash
    RUN_DIR="bowser-qa-test-results/$(date +%Y%m%d_%H%M%S)_$(uuidgen | tr '[:upper:]' '[:lower:]' | head -c 6)"
    ```
-9. For each story, build its `SCREENSHOT_PATH`:
-   - `{RUN_DIR}/{file-stem}/{slugified-story-name}/`
-   - Example: `bowser-qa-test-results/20260210_143022_a1b2c3/athlete-login/activities-page-loads/`
-10. Create the `{RUN_DIR}/auth/` directory if any setup entries exist:
+9. **Resolve `MAIN_SITE`:**
+   - If `MAIN_SITE` was provided as an argument, use it.
+   - Otherwise, check if any story or setup entry URL contains `[MAIN_SITE]`. If so, prompt the user with `AskUserQuestion` asking for the base URL (e.g., `http://localhost:3000`).
+   - If no URL contains `[MAIN_SITE]`, skip this step (all URLs are already absolute).
+   - Strip any trailing `/` from the value.
+   - Save `MAIN_SITE` to `{RUN_DIR}/main_site` using the Write tool.
+   - Replace all occurrences of `[MAIN_SITE]` in every story and setup entry URL with the resolved value.
+10. For each story, build its `SCREENSHOT_PATH`:
+    - `{RUN_DIR}/{file-stem}/{slugified-story-name}/`
+    - Example: `bowser-qa-test-results/20260210_143022_a1b2c3/athlete-login/activities-page-loads/`
+11. Create the `{RUN_DIR}/auth/` directory if any setup entries exist:
     ```bash
     mkdir -p {RUN_DIR}/auth
     ```
@@ -115,8 +125,8 @@ bowser-qa-test-results/
 
 Run this phase only if any stories reference an `auth_file`.
 
-11. Collect all `setup` entries across all parsed YAML files. Deduplicate by `auth_file` path.
-12. For each unique setup entry, spawn one `bowser-qa-agent` via the Task tool using this prompt:
+12. Collect all `setup` entries across all parsed YAML files. Deduplicate by `auth_file` path.
+13. For each unique setup entry, spawn one `bowser-qa-agent` via the Task tool using this prompt:
 
 ```
 You are performing a one-time login to save browser auth state for reuse by parallel test agents.
@@ -139,11 +149,11 @@ Instructions:
   SETUP: {DONE|FAIL} | {setup.auth_file}
 ```
 
-13. **Wait for ALL setup agents to complete before proceeding.** If any setup agent fails (reports `SETUP: FAIL`), mark all stories that depend on that `auth_file` as FAIL and exclude them from the spawn phase.
+14. **Wait for ALL setup agents to complete before proceeding.** If any setup agent fails (reports `SETUP: FAIL`), mark all stories that depend on that `auth_file` as FAIL and exclude them from the spawn phase.
 
 ### Phase 2: Spawn
 
-14. For each remaining story (not excluded by setup failure), spawn a `bowser-qa-agent` teammate via the Task tool. **Launch ALL story agents in a single message so they run in parallel.**
+15. For each remaining story (not excluded by setup failure), spawn a `bowser-qa-agent` teammate via the Task tool. **Launch ALL story agents in a single message so they run in parallel.**
 
 For stories **without** `auth_file`, use this prompt:
 
@@ -198,24 +208,24 @@ Instructions:
 
 ### Phase 3: Collect
 
-15. Wait for all story agent messages to arrive
-16. Parse each report to extract:
+16. Wait for all story agent messages to arrive
+17. Parse each report to extract:
     - Overall result: PASS or FAIL (look for `RESULT:` line)
     - Steps completed vs total (from `Steps: X/Y`)
     - The full agent report text
     - Token usage from the `<usage>` block: `total_tokens`, `tool_uses`, `duration_ms`
-17. Include any stories that were pre-failed due to setup failure
-18. Also collect token usage from any setup agents that ran in Phase 1.5
+18. Include any stories that were pre-failed due to setup failure
+19. Also collect token usage from any setup agents that ran in Phase 1.5
 
 ### Phase 4: Cleanup and Report
 
-19. Delete ephemeral auth state files:
+20. Delete ephemeral auth state files:
     ```bash
     rm -rf {RUN_DIR}/auth
     ```
-19. Compose the full report markdown (see `Report` section below for the format).
-20. Write the report to `{RUN_DIR}/report.md` using the Write tool.
-21. Print the report to the terminal so the user can see the results inline.
+21. Compose the full report markdown (see `Report` section below for the format).
+22. Write the report to `{RUN_DIR}/report.md` using the Write tool.
+23. Print the report to the terminal so the user can see the results inline.
 
 ## Report
 
@@ -225,6 +235,7 @@ Compose this markdown, write it to `{RUN_DIR}/report.md`, then also print it to 
 # UI Review Summary
 
 **Run:** {current date and time}
+**Site:** {MAIN_SITE} (if set)
 **Stories dir:** {STORIES_DIR}
 **Stories:** {total} total | {passed} passed | {failed} failed
 **Status:** ✅ ALL PASSED | ❌ PARTIAL FAILURE | ❌ ALL FAILED
