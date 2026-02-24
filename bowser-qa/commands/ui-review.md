@@ -173,6 +173,7 @@ Instructions:
 - Take a screenshot after each significant step
 - Save ALL screenshots to: {SCREENSHOT_PATH}
 - Report each step as PASS or FAIL with a brief explanation
+- If the server returns an error (5xx, connection refused, timeout, page crash), stop immediately — report the error as a FAIL and do NOT attempt to debug, restart, or fix the server
 - At the end, provide a summary: total steps, passed, failed
 - Use this exact format for your final summary line:
   RESULT: {PASS|FAIL} | Steps: {passed}/{total}
@@ -201,6 +202,7 @@ Instructions:
 - Take a screenshot after each significant step
 - Save ALL screenshots to: {SCREENSHOT_PATH}
 - Report each step as PASS or FAIL with a brief explanation
+- If the server returns an error (5xx, connection refused, timeout, page crash), stop immediately — report the error as a FAIL and do NOT attempt to debug, restart, or fix the server
 - At the end, provide a summary: total steps, passed, failed
 - Use this exact format for your final summary line:
   RESULT: {PASS|FAIL} | Steps: {passed}/{total}
