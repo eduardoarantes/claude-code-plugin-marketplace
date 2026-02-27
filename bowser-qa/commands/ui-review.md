@@ -85,6 +85,7 @@ bowser-qa-test-results/
 
 ## Instructions
 
+- **NEVER attempt to fix, start, restart, or recover the application under test.** You are a test orchestrator, not a developer. If the server is down, a database is empty, or any infrastructure is broken — report the failure and stop. Do not run servers, seed databases, install dependencies, or modify any application code.
 - If FILENAME_FILTER is provided and non-empty, only run stories from files whose name contains that substring
 - If a YAML file fails to parse, log a warning and skip it — do not abort the entire run
 - If no stories are found after discovery, report that and stop
