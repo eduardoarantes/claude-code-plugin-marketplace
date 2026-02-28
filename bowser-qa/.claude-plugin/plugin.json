@@ -1,7 +1,7 @@
 {
   "name": "bowser-qa",
   "description": "Parallel UI story validation — discovers YAML user stories, fans out bowser-qa-agents with shared auth state, aggregates pass/fail results with screenshots and a markdown report.",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "author": {
     "name": "Eduardo Rodrigues"
   }
