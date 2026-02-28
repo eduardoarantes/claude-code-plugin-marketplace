@@ -155,68 +155,95 @@ Instructions:
 
 ### Phase 2: Spawn
 
-15. **Spawn exactly ONE `bowser-qa-agent` per YAML file** (NOT one per story). Each agent receives ALL stories from its YAML file and executes them sequentially within a single agent. Launch all file agents in a single message so they run in parallel. For example: 2 YAML files = 2 Task calls, even if those files contain 10 stories total.
+15. Count the number of YAML files that have remaining stories. Make **exactly that many** Task tool calls — one call per file. All Task calls go in a **single message** so they run in parallel. Do NOT make one Task call per story.
 
-For each YAML file, build a prompt that lists all its stories. Use this template:
+For each YAML file, build **one** prompt that contains **all** of that file's stories. The agent will execute them sequentially inside a single session.
+
+**Concrete example:** If `athlete-login.yaml` has 4 stories (Homepage, Login flow, Activities page, Settings page), you make **one** Task call with a prompt like this:
 
 ```
 Execute the following user stories **sequentially** (one after another) and report results for each.
 
-**Source file:** {filename}
-**Headed:** {HEADED}
-**Vision:** {VISION}
+**Source file:** athlete-login.yaml
+**Headed:** false
+**Vision:** false
 
 ---
 
-{For each story in this file, include a story block (see below). Separate each block with a `---` line.}
-
----
-
-## General Instructions
-
-- Execute stories in the order listed above — finish one completely before starting the next
-- For each story, follow each step in the workflow sequentially
-- Take a screenshot after each significant step
-- Save screenshots for each story to its own directory: {SCREENSHOT_PATH_for_that_story}
-- Report each step as PASS or FAIL with a brief explanation
-- If the server returns an error (5xx, connection refused, timeout, page crash), stop the CURRENT story immediately — report it as FAIL, then continue to the NEXT story
-- Do NOT attempt to debug, restart, or fix the server
-
-After completing ALL stories, provide a summary using this exact format (one RESULT line per story, then a TOTAL line):
-
-RESULT: {story.name} | {PASS|FAIL} | Steps: {passed}/{total}
-RESULT: {story.name} | {PASS|FAIL} | Steps: {passed}/{total}
-...
-TOTAL: {total_stories} stories | {passed_stories} passed | {failed_stories} failed
-```
-
-**Story block format — without `auth_file`:**
-
-```
-### Story: {story.name}
-**URL:** {story.url}
-**Screenshots:** {SCREENSHOT_PATH}
+### Story 1: Homepage loads
+**URL:** http://localhost:3000
+**Screenshots:** bowser-qa-test-results/20260228_143022_a1b2c3/athlete-login/homepage-loads/
 
 **Workflow:**
-{story.workflow}
-```
+Navigate to the homepage
+Verify it loads successfully
 
-**Story block format — with `auth_file`:**
+---
 
-```
-### Story: {story.name}
-**URL:** {story.url}
-**Screenshots:** {SCREENSHOT_PATH}
+### Story 2: Login flow
+**URL:** http://localhost:3000/login
+**Screenshots:** bowser-qa-test-results/20260228_143022_a1b2c3/athlete-login/login-flow/
 
 **Pre-step (do this first, before the workflow):**
-Load saved auth state: playwright-cli state-load {RUN_DIR}/auth/{story.auth_file}
-Then navigate to: {story.url}
+Load saved auth state: playwright-cli state-load bowser-qa-test-results/20260228_143022_a1b2c3/auth/cameron.json
+Then navigate to: http://localhost:3000/login
 
 **Workflow:**
-{story.workflow}
+Verify the login page loads
+Fill email and password, click login
+Wait for redirect to dashboard
 
 Note: Do NOT perform a manual login — auth state is already saved.
+
+---
+
+### Story 3: Activities page
+**URL:** http://localhost:3000/activities
+**Screenshots:** bowser-qa-test-results/20260228_143022_a1b2c3/athlete-login/activities-page/
+
+**Pre-step (do this first, before the workflow):**
+Load saved auth state: playwright-cli state-load bowser-qa-test-results/20260228_143022_a1b2c3/auth/cameron.json
+Then navigate to: http://localhost:3000/activities
+
+**Workflow:**
+Verify the activities page loads
+Verify key widgets are visible
+
+Note: Do NOT perform a manual login — auth state is already saved.
+
+---
+
+### Story 4: Settings page
+**URL:** http://localhost:3000/settings
+**Screenshots:** bowser-qa-test-results/20260228_143022_a1b2c3/athlete-login/settings-page/
+
+**Workflow:**
+Navigate to the settings page
+Verify it loads successfully
+
+---
+
+## Instructions
+
+- Execute stories 1 through 4 **in order** — finish each story completely before starting the next
+- For each story, follow each step in its workflow sequentially
+- Take a screenshot after each significant step
+- Save screenshots to the directory listed under each story's **Screenshots** field
+- Report each step as PASS or FAIL with a brief explanation
+- If a story has a **Pre-step**, execute it before the workflow (load auth state, then navigate)
+- If the server returns an error (5xx, connection refused, timeout, page crash), stop the CURRENT story — report it as FAIL, then move on to the NEXT story
+- Do NOT attempt to debug, restart, or fix the server
+
+After completing ALL stories, provide a summary using this exact format:
+
+RESULT: Homepage loads | PASS | Steps: 2/2
+RESULT: Login flow | FAIL | Steps: 1/3
+RESULT: Activities page | PASS | Steps: 2/2
+RESULT: Settings page | PASS | Steps: 2/2
+TOTAL: 4 stories | 3 passed | 1 failed
 ```
+
+Follow this exact pattern for each YAML file. Substitute actual story names, URLs, workflows, screenshot paths, and settings. For stories with `auth_file`, include the **Pre-step** block. For stories without `auth_file`, omit it.
 
 ### Phase 3: Collect
 
