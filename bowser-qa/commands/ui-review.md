@@ -251,9 +251,15 @@ Follow this exact pattern for each YAML file. Substitute actual story names, URL
 17. Parse each file agent's report to extract per-story results:
     - For each `RESULT:` line: extract story name, PASS/FAIL, and steps (X/Y)
     - The full agent report text (contains details for all stories in that file)
-    - Token usage from the `<usage>` block: `total_tokens`, `tool_uses`, `duration_ms`
+    - Token usage: each Task tool result ends with a usage summary in this format:
+      ```
+      <usage>total_tokens: 41186
+      tool_uses: 37
+      duration_ms: 119394</usage>
+      ```
+      Parse `total_tokens`, `tool_uses`, and `duration_ms` from this block. These values appear in the **Task tool return message**, not in the agent's own text output.
 18. Include any stories that were pre-failed due to setup failure
-19. Also collect token usage from any setup agents that ran in Phase 1.5
+19. Also collect token usage from setup agents (same `<usage>` block format)
 
 ### Phase 4: Cleanup and Report
 
