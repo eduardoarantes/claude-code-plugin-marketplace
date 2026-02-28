@@ -91,6 +91,7 @@ bowser-qa-test-results/
 - If no stories are found after discovery, report that and stop
 - Be resilient: if a teammate times out or crashes, mark that story as FAIL and include whatever output was available
 - The `subagent_type` for each Task call must be `bowser-qa-agent`
+- **CRITICAL: Spawn exactly ONE agent per YAML file, NOT one agent per story.** Each agent receives ALL stories from its YAML file and executes them sequentially. If you have 3 YAML files, you spawn exactly 3 agents — not one per story.
 
 ## Workflow
 
@@ -154,7 +155,7 @@ Instructions:
 
 ### Phase 2: Spawn
 
-15. For each YAML file that has remaining stories (not excluded by setup failure), spawn one `bowser-qa-agent` via the Task tool. **Launch ALL file agents in a single message so they run in parallel.** Each agent receives all stories from its file and runs them **sequentially**, one after another.
+15. **Spawn exactly ONE `bowser-qa-agent` per YAML file** (NOT one per story). Each agent receives ALL stories from its YAML file and executes them sequentially within a single agent. Launch all file agents in a single message so they run in parallel. For example: 2 YAML files = 2 Task calls, even if those files contain 10 stories total.
 
 For each YAML file, build a prompt that lists all its stories. Use this template:
 
