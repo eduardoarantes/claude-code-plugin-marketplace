@@ -1,12 +1,12 @@
 ---
 model: opus
-description: Parallel user story validation — discovers YAML stories, fans out bowser-qa-agents, aggregates results
+description: Per-file user story validation — discovers YAML files, fans out one bowser-qa-agent per file, stories run sequentially within each agent
 argument-hint: [main-site-url] [stories-dir] [headed] [filename-filter] [vision]
 ---
 
 # Purpose
 
-Discover user stories from YAML files, run optional setup (login/auth) agents first, then fan out parallel `bowser-qa-agent` instances to validate each story and aggregate pass/fail results with screenshots.
+Discover user stories from YAML files, run optional setup (login/auth) agents first, then fan out one `bowser-qa-agent` per YAML file. Each agent runs the stories from its file sequentially and reports results.
 
 ## Variables
 
@@ -100,7 +100,7 @@ bowser-qa-test-results/
 2. If `FILENAME_FILTER` is provided and non-empty, filter the file list to only include files whose name contains that substring
 3. Read each YAML file and parse both the `setup` array (optional) and `stories` array
 4. If a file fails to parse, log a warning and skip it
-5. Build a flat list of all stories across all files, tracking which source file each story came from
+5. Organize stories by source file — keep each file's stories grouped together (do NOT flatten into a single list)
 6. Collect all unique `auth_file` values referenced by stories across all files (deduplicated)
 7. If no stories are found, report that and stop
 8. Generate `RUN_DIR` using Bash:
@@ -154,68 +154,75 @@ Instructions:
 
 ### Phase 2: Spawn
 
-15. For each remaining story (not excluded by setup failure), spawn a `bowser-qa-agent` teammate via the Task tool. **Launch ALL story agents in a single message so they run in parallel.**
+15. For each YAML file that has remaining stories (not excluded by setup failure), spawn one `bowser-qa-agent` via the Task tool. **Launch ALL file agents in a single message so they run in parallel.** Each agent receives all stories from its file and runs them **sequentially**, one after another.
 
-For stories **without** `auth_file`, use this prompt:
+For each YAML file, build a prompt that lists all its stories. Use this template:
 
 ```
-Execute this user story and report results:
+Execute the following user stories **sequentially** (one after another) and report results for each.
 
-**Story:** {story.name}
-**URL:** {story.url}
+**Source file:** {filename}
 **Headed:** {HEADED}
 **Vision:** {VISION}
+
+---
+
+{For each story in this file, include a story block (see below). Separate each block with a `---` line.}
+
+---
+
+## General Instructions
+
+- Execute stories in the order listed above — finish one completely before starting the next
+- For each story, follow each step in the workflow sequentially
+- Take a screenshot after each significant step
+- Save screenshots for each story to its own directory: {SCREENSHOT_PATH_for_that_story}
+- Report each step as PASS or FAIL with a brief explanation
+- If the server returns an error (5xx, connection refused, timeout, page crash), stop the CURRENT story immediately — report it as FAIL, then continue to the NEXT story
+- Do NOT attempt to debug, restart, or fix the server
+
+After completing ALL stories, provide a summary using this exact format (one RESULT line per story, then a TOTAL line):
+
+RESULT: {story.name} | {PASS|FAIL} | Steps: {passed}/{total}
+RESULT: {story.name} | {PASS|FAIL} | Steps: {passed}/{total}
+...
+TOTAL: {total_stories} stories | {passed_stories} passed | {failed_stories} failed
+```
+
+**Story block format — without `auth_file`:**
+
+```
+### Story: {story.name}
+**URL:** {story.url}
+**Screenshots:** {SCREENSHOT_PATH}
 
 **Workflow:**
 {story.workflow}
-
-Instructions:
-- Follow each step in the workflow sequentially
-- Take a screenshot after each significant step
-- Save ALL screenshots to: {SCREENSHOT_PATH}
-- Report each step as PASS or FAIL with a brief explanation
-- If the server returns an error (5xx, connection refused, timeout, page crash), stop immediately — report the error as a FAIL and do NOT attempt to debug, restart, or fix the server
-- At the end, provide a summary: total steps, passed, failed
-- Use this exact format for your final summary line:
-  RESULT: {PASS|FAIL} | Steps: {passed}/{total}
 ```
 
-For stories **with** `auth_file`, use this prompt:
+**Story block format — with `auth_file`:**
 
 ```
-Execute this user story and report results. Auth state is pre-saved — do NOT log in manually.
-
-**Story:** {story.name}
+### Story: {story.name}
 **URL:** {story.url}
-**Headed:** {HEADED}
-**Vision:** {VISION}
+**Screenshots:** {SCREENSHOT_PATH}
 
-**Pre-step (do this first, before anything else):**
+**Pre-step (do this first, before the workflow):**
 Load saved auth state: playwright-cli state-load {RUN_DIR}/auth/{story.auth_file}
 Then navigate to: {story.url}
 
 **Workflow:**
 {story.workflow}
 
-Instructions:
-- Load auth state and navigate FIRST (pre-step above), then follow the workflow
-- Do NOT perform a manual login — auth state is already saved
-- Take a screenshot after each significant step
-- Save ALL screenshots to: {SCREENSHOT_PATH}
-- Report each step as PASS or FAIL with a brief explanation
-- If the server returns an error (5xx, connection refused, timeout, page crash), stop immediately — report the error as a FAIL and do NOT attempt to debug, restart, or fix the server
-- At the end, provide a summary: total steps, passed, failed
-- Use this exact format for your final summary line:
-  RESULT: {PASS|FAIL} | Steps: {passed}/{total}
+Note: Do NOT perform a manual login — auth state is already saved.
 ```
 
 ### Phase 3: Collect
 
-16. Wait for all story agent messages to arrive
-17. Parse each report to extract:
-    - Overall result: PASS or FAIL (look for `RESULT:` line)
-    - Steps completed vs total (from `Steps: X/Y`)
-    - The full agent report text
+16. Wait for all file agent messages to arrive
+17. Parse each file agent's report to extract per-story results:
+    - For each `RESULT:` line: extract story name, PASS/FAIL, and steps (X/Y)
+    - The full agent report text (contains details for all stories in that file)
     - Token usage from the `<usage>` block: `total_tokens`, `tool_uses`, `duration_ms`
 18. Include any stories that were pre-failed due to setup failure
 19. Also collect token usage from any setup agents that ran in Phase 1.5
@@ -268,7 +275,7 @@ Compose this markdown, write it to `{RUN_DIR}/report.md`, then also print it to 
 | Agent              | Tokens     | Tool Uses | Duration |
 | ------------------ | ---------- | --------- | -------- |
 | Setup: {auth_file} | {tokens}   | {uses}    | {Xs}     |
-| {story name}       | {tokens}   | {uses}    | {Xs}     |
+| {filename}         | {tokens}   | {uses}    | {Xs}     |
 | **Total**          | **{total}** | **{total}** | —     |
 
 ## Screenshots
@@ -278,7 +285,7 @@ All screenshots saved to: `{RUN_DIR}/`
 Use ✅ ALL PASSED for status only when every story passed. Use ❌ PARTIAL FAILURE when some passed and some failed. Use ❌ ALL FAILED when none passed.
 
 For the Token Usage table:
-- Include one row per setup agent and one row per story agent
+- Include one row per setup agent and one row per file agent (not per story)
 - Parse `total_tokens`, `tool_uses`, and `duration_ms` from the `<usage>` block in each agent's response
 - Convert `duration_ms` to seconds for display (e.g., `45s`)
 - The **Total** row sums `total_tokens` and `tool_uses` across all agents
