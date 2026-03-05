@@ -90,7 +90,7 @@ bowser-qa-test-results/
 - If a YAML file fails to parse, log a warning and skip it — do not abort the entire run
 - If no stories are found after discovery, report that and stop
 - Be resilient: if a teammate times out or crashes, mark that story as FAIL and include whatever output was available
-- The `subagent_type` for each Task call must be `bowser-qa-agent`
+- The `subagent_type` for each Task call must be `bowser-qa:bowser-qa-agent`
 - **CRITICAL: Spawn exactly ONE agent per YAML file, NOT one agent per story.** Each agent receives ALL stories from its YAML file and executes them sequentially. If you have 3 YAML files, you spawn exactly 3 agents — not one per story.
 
 ## Workflow
