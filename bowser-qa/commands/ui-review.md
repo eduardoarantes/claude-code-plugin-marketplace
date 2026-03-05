@@ -295,10 +295,10 @@ Compose this markdown, write it to `{RUN_DIR}/report.md`, then also print it to 
 
 ## Results
 
-| #   | Story        | Source File | Status | Steps            |
-| --- | ------------ | ----------- | ------ | ---------------- |
-| 1   | {story name} | {filename}  | ✅ PASS | {passed}/{total} |
-| 2   | {story name} | {filename}  | ❌ FAIL | {passed}/{total} |
+| #   | Story                       | Source File                | Status   | Steps            |
+| --- | --------------------------  | -------------------------  | -------- | ---------------- |
+| 1   | {story name}                | {filename}                 | ✅ PASS  | {passed}/{total} |
+| 2   | {story name}                | {filename}                 | ❌ FAIL  | {passed}/{total} |
 
 ## Failures
 
@@ -315,11 +315,11 @@ Compose this markdown, write it to `{RUN_DIR}/report.md`, then also print it to 
 
 ## Token Usage
 
-| Agent              | Tokens     | Tool Uses | Duration |
-| ------------------ | ---------- | --------- | -------- |
-| Setup: {auth_file} | {tokens}   | {uses}    | {Xs}     |
-| {filename}         | {tokens}   | {uses}    | {Xs}     |
-| **Total**          | **{total}** | **{total}** | —     |
+| Agent                            | Tokens      | Tool Uses      | Duration |
+| -------------------------------  | ----------- | -------------  | -------- |
+| Setup: {auth_file}               | {tokens}    | {uses}         | {Xs}     |
+| {filename}                       | {tokens}    | {uses}         | {Xs}     |
+| **Total**                        | **{total}** | **{total}**    | —        |
 
 ## Screenshots
 All screenshots saved to: `{RUN_DIR}/`
