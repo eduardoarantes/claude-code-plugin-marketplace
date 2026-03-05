@@ -285,12 +285,12 @@ Compose this markdown, write it to `{RUN_DIR}/report.md`, then also print it to 
 ```
 # UI Review Summary
 
-**Run:** {current date and time}
-**Duration:** {total duration across all agents, e.g., 2m 15s}
-**Model:** {model used by bowser-qa-agent, e.g., haiku, sonnet, opus}
-**Site:** {MAIN_SITE} (if set)
-**Stories dir:** {STORIES_DIR}
-**Stories:** {total} total | {passed} passed | {failed} failed
+**Run:** {current date and time}<br>
+**Duration:** {total duration across all agents, e.g., 2m 15s}<br>
+**Model:** {model used by bowser-qa-agent, e.g., haiku, sonnet, opus}<br>
+**Site:** {MAIN_SITE} (if set)<br>
+**Stories dir:** {STORIES_DIR}<br>
+**Stories:** {total} total | {passed} passed | {failed} failed<br>
 **Status:** ✅ ALL PASSED | ❌ PARTIAL FAILURE | ❌ ALL FAILED
 
 ## Results
