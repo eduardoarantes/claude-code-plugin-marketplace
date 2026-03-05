@@ -100,12 +100,21 @@ If a `playwright-cli.json` exists in the working directory, use it automatically
 {
   "browser": {
     "browserName": "chromium",
-    "launchOptions": { "headless": true },
+    "launchOptions": {
+      "headless": true,
+      "args": [
+        "--disable-save-password-bubble",
+        "--disable-password-manager-reauthentication",
+        "--password-store=basic"
+      ]
+    },
     "contextOptions": { "viewport": { "width": 1440, "height": 900 } }
   },
   "outputDir": "./screenshots"
 }
 ```
+
+The `args` array disables Chrome's password save prompts that can interfere with automation.
 
 ## Full Help
 
