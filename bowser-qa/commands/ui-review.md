@@ -1,5 +1,5 @@
 ---
-model: opus
+model: haiku
 description: Per-file user story validation — discovers YAML files, fans out one bowser-qa-agent per file, stories run sequentially within each agent
 argument-hint: [main-site-url] [stories-dir] [headed] [filename-filter] [vision]
 ---
@@ -251,15 +251,22 @@ Follow this exact pattern for each YAML file. Substitute actual story names, URL
 17. Parse each file agent's report to extract per-story results:
     - For each `RESULT:` line: extract story name, PASS/FAIL, and steps (X/Y)
     - The full agent report text (contains details for all stories in that file)
-    - Token usage: each Task tool result ends with a usage summary in this format:
-      ```
-      <usage>total_tokens: 41186
-      tool_uses: 37
-      duration_ms: 119394</usage>
-      ```
-      Parse `total_tokens`, `tool_uses`, and `duration_ms` from this block. These values appear in the **Task tool return message**, not in the agent's own text output.
 18. Include any stories that were pre-failed due to setup failure
-19. Also collect token usage from setup agents (same `<usage>` block format)
+19. **CRITICAL — Extract token usage from EVERY agent response.** Each Task tool result ends with a `<usage>` block. You MUST parse this for every agent (both setup and file agents):
+
+    ```
+    <usage>total_tokens: 41186
+    tool_uses: 37
+    duration_ms: 119394</usage>
+    ```
+
+    - Look for this block at the END of each Task tool result message
+    - Extract `total_tokens`, `tool_uses`, and `duration_ms` as integers
+    - Store these values keyed by agent name (e.g., `Setup: cameron.json` or `athlete-login.yaml`)
+    - If a Task tool result does not contain a `<usage>` block (e.g., agent crashed), record `null` for that agent
+    - Sum all `duration_ms` values to compute `total_duration` for the summary header
+    - Sum all `total_tokens` and `tool_uses` for the totals row in the Token Usage table
+    - These values are REQUIRED for the report — do not skip this step
 
 ### Phase 4: Cleanup and Report
 
@@ -279,6 +286,8 @@ Compose this markdown, write it to `{RUN_DIR}/report.md`, then also print it to 
 # UI Review Summary
 
 **Run:** {current date and time}
+**Duration:** {total duration across all agents, e.g., 2m 15s}
+**Model:** {model used by bowser-qa-agent, e.g., haiku, sonnet, opus}
 **Site:** {MAIN_SITE} (if set)
 **Stories dir:** {STORIES_DIR}
 **Stories:** {total} total | {passed} passed | {failed} failed
@@ -318,9 +327,18 @@ All screenshots saved to: `{RUN_DIR}/`
 
 Use ✅ ALL PASSED for status only when every story passed. Use ❌ PARTIAL FAILURE when some passed and some failed. Use ❌ ALL FAILED when none passed.
 
-For the Token Usage table:
+**Token Usage table is REQUIRED.** You MUST include it in every report:
+
 - Include one row per setup agent and one row per file agent (not per story)
-- Parse `total_tokens`, `tool_uses`, and `duration_ms` from the `<usage>` block in each agent's response
-- Convert `duration_ms` to seconds for display (e.g., `45s`)
+- The `<usage>` block appears at the END of each Task tool result — look for it there, not in the agent's text output
+- Example of where to find it:
+  ```
+  [agent's text output here...]
+
+  <usage>total_tokens: 41186
+  tool_uses: 37
+  duration_ms: 119394</usage>
+  ```
+- Convert `duration_ms` to human-readable format: use `Xm Ys` for times over 60s (e.g., `119394` → `1m 59s`), or `Xs` for shorter times (e.g., `45000` → `45s`)
 - The **Total** row sums `total_tokens` and `tool_uses` across all agents
-- If token usage data is unavailable for an agent (e.g., it crashed), show `—` for that row
+- If an agent crashed and has no `<usage>` block, show `—` for that row
